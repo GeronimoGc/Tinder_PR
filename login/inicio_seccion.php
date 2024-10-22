@@ -11,7 +11,7 @@
     <div class="container">
         <!-- Formulario de Inicio de Sesión -->
         <div class="form-container">
-            <h2>Inicio de Sesión</h2>
+            <h2>Inicio de Sesión tinder </h2>
             <form action="/login" method="POST">
                 <label for="login_correo">Correo Electrónico:</label>
                 <input type="email" id="login_correo" name="login_correo" required>

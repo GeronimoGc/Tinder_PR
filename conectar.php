@@ -1,8 +1,8 @@
 <?php
 $servidor = "localhost";
 $usuario_bd = "root";
-$contrasena_bd = "";
-$nombre_bd = "formularios";
+$contrasena_bd = "root";
+$nombre_bd = "tinder";
 
 try {
     $conexion = new PDO("mysql:host=$servidor;dbname=$nombre_bd", $usuario_bd, $contrasena_bd);

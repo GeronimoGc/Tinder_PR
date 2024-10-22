@@ -9,7 +9,8 @@
 </head>
 <body>
     <div class="container">
-        <button <>< href=Registro.php> </a>> registrarse</button> </button>
+        <button><a href=Registro.php>registrarse</a></button>
+        <button><a href=inicio_seccion.php>inicio de seccion</a></button>
     </div>
 </body>
 </html>

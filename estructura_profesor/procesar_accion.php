@@ -1,9 +1,4 @@
 <?php
-// Conexión a la base de datos con PDO
-$host = 'localhost';
-$nombre_bd = 'root':
-$usuario_bd = 'root';
-$contrasena_bd = 'root';
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$nombre_bd", $usuario_bd, $contrasena_bd);

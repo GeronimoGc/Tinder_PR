@@ -20,7 +20,7 @@
                 <label for="login_password">Contraseña:</label>
                 <input type="password" id="login_password" name="login_password" required>
 
-                <button type="submit">Iniciar Sesión</button>
+                <button> <atype="submit" href=op_login.php></atype=>Iniciar Sesión</button>
             </form>
         </div>
     </div>

@@ -10,6 +10,7 @@
 <body>
     <div class="container">
         <button><a href=Registro.php>registrarse</a></button>
+        <button><a href=inicio_seccion.php>inicio de seccion</a></button>
     </div>
 </body>
 </html>

@@ -1,17 +1,19 @@
 <?php
-include("assets/config/op_conectar.php");
+// Conexión a la base de datos con PDO
+$host = 'localhost';
+$nombre_bd = 'estructura profesor';
+$usuario_bd = 'root';
+$contrasena_bd = 'root';
+
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$nombre_bd", $usuario_bd, $contrasena_bd);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Error en la conexión: " . $e->getMessage());
+}
 
 // ID del usuario autenticado (deberías cambiar esto por una sesión de usuario real)
-$id = 0; // Usuario autenticado, ejemplo: Juan
-
-echo"$id";
-
-if (!isset($_SESSION['id']) || $_SESSION['id'] == 0) {
-    header("Location: login/");
-    exit(); 
-} 
-
-
+$id_usuario = 1; // Usuario autenticado, ejemplo: Juan
 
 // Obtener el siguiente usuario al que no se ha dado "me gusta" ni "no me gusta"
 $consulta_siguiente = $pdo->prepare("
@@ -102,4 +104,6 @@ $usuarios_aceptados = $consulta_aceptados->fetchAll(PDO::FETCH_ASSOC);
         });
     </script>
 </body>
+</html>
+
 </html>

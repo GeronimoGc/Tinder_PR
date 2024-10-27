@@ -1,12 +1,17 @@
 <?php
-$id = 0;
-
 include("assets/config/op_conectar.php");
 
-if (!isset($_SESSION['id_usuario']) || $_SESSION['id_usuario'] == 0) {
-    header("Location: login/");
-    exit(); 
-} 
+
+if (isset($_SESSION["id"])) {
+    $id = $_SESSION["id"];
+} else {
+    if (!isset($_SESSION['id']) || $_SESSION['id'] == 0) {
+        header("Location: login/");
+        exit(); 
+    } 
+}
+
+
 
 
 

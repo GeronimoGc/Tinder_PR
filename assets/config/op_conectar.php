@@ -1,5 +1,4 @@
 <?php
-session_start();
 // Conexión a la base de datos con PDO
 $host = 'localhost';
 $nombre_bd = 'tinder';

@@ -1,19 +1,18 @@
 <?php
 include("assets/config/op_conectar.php");
 
+$id_usuario = $_POST['id_usuario'];
 
-if (isset($_SESSION["id"])) {
-    $id = $_SESSION["id"];
-} else {
-    if (!isset($_SESSION['id']) || $_SESSION['id'] == 0) {
-        header("Location: login/");
-        exit(); 
-    } 
+if (isset($_POST['id_usuario'])) {
+    $_SESSION['id_usuario'] = (int)$_POST['id_usuario'];
 }
+if (!isset($_SESSION['id_usuario']) || $_SESSION['id_usuario'] == 0) {
+    header("Location: login/");
+    exit();
+}
+$id_usuario = $_POST['id_usuario'];
 
-
-
-
+echo "$id_usuario";
 
 // Obtener el siguiente usuario al que no se ha dado "me gusta" ni "no me gusta"
 $consulta_siguiente = $pdo->prepare("
@@ -40,6 +39,7 @@ $usuarios_aceptados = $consulta_aceptados->fetchAll(PDO::FETCH_ASSOC);
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -47,6 +47,7 @@ $usuarios_aceptados = $consulta_aceptados->fetchAll(PDO::FETCH_ASSOC);
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
+
 <body class="bg-gray-100">
 
     <div class="container mx-auto mt-10">
@@ -59,7 +60,7 @@ $usuarios_aceptados = $consulta_aceptados->fetchAll(PDO::FETCH_ASSOC);
                 <div class="bg-white shadow-lg rounded-lg p-6 text-center">
                     <img src="imagenes/<?php echo $siguiente_usuario['foto_perfil']; ?>" alt="Foto de perfil" class="w-48 h-48 rounded-full mx-auto">
                     <h2 class="text-2xl mt-4"><?php echo $siguiente_usuario['nombre_usuario']; ?></h2>
-                    
+
                     <div class="mt-6">
                         <button id="me_gusta" class="bg-green-500 text-white px-6 py-2 rounded-md">Me gusta</button>
                         <button id="no_me_gusta" class="bg-red-500 text-white px-6 py-2 rounded-md">No me gusta</button>
@@ -104,4 +105,5 @@ $usuarios_aceptados = $consulta_aceptados->fetchAll(PDO::FETCH_ASSOC);
         });
     </script>
 </body>
+
 </html>

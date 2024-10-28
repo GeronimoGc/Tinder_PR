@@ -19,7 +19,7 @@
                 class="block py-2 px-4 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700">
                 Iniciar Sesión
             </a>
-            <a href="register.php"
+            <a href="../CreateAcount/"
                 class="block py-2 px-4 bg-green-600 text-white font-semibold rounded-md hover:bg-green-700">
                 Crear Cuenta
             </a>

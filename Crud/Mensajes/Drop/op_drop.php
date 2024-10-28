@@ -1,5 +1,5 @@
 <?php
-include('conectar.php'); // Incluye el archivo de conexión
+include('../../../assets/config/op_conectar.php');; // Incluye el archivo de conexión
 
 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
     $id_estudiante = $_GET['id'];
@@ -7,7 +7,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
     try {
         // Preparar la consulta de eliminación
         $consulta = $conexion->prepare("DELETE FROM estudiante WHERE id = ?");
-        
+
         // Ejecutar la consulta de eliminación
         $consulta->execute([$id_estudiante]);
 
@@ -22,4 +22,3 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
     header("Location: index.php");
     exit();
 }
-

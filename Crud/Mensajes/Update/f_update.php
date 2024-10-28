@@ -1,5 +1,5 @@
 <?php
-include('conectar.php'); // Incluye el archivo de conexión
+include('../../../assets/config/op_conectar.php');; // Incluye el archivo de conexión
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Obtener los datos del formulario
@@ -18,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {
         // Preparar la consulta de actualización
         $consulta = $conexion->prepare("UPDATE estudiante SET nombre=?, documento=?, fecha_nacimiento=?, altura=?, ciudad=?, estrato=?, area=?, id_genero=?, id_tipo_documento=?, id_rrhh=? WHERE id=?");
-        
+
         // Ejecutar la consulta de actualización
         $consulta->execute([$nombre, $documento, $fecha_nacimiento, $altura, $ciudad, $estrato, $area, $id_genero, $id_tipo_documento, $id_rrhh, $id_estudiante]);
 
@@ -33,4 +33,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     header("Location: index.php");
     exit();
 }
-?>

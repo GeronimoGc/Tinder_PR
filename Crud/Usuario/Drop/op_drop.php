@@ -3,9 +3,23 @@ include('../../../assets/config/op_conectar.php');; // Incluye el archivo de con
 
 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id_usuario'])) {
     $id_usuario = $_GET['id_usuario'];
-    $page = $_GET¨["url"];
+    $page = $_GET["url"];
 
     try {
+
+        // Obtiene el nombre de la imagen de perfil
+        $consulta = $pdo->prepare("SELECT foto_perfil FROM usuarios WHERE id = ?");
+        $consulta->execute([$id_usuario]);
+        $foto = $consulta->fetchall(PDO::FETCH_ASSOC);
+
+        if ($usuario && !empty($usuario['foto_perfil'])) {
+            // Elimina la imagen de perfil del servidor usando la ruta completa
+            if (file_exists($usuario['foto_perfil'])) {
+                unlink($usuario['foto_perfil']);
+            }
+        }
+
+        
         // Preparar la consulta de eliminación
         $consulta = $pdo->prepare("DELETE FROM usuarios WHERE id = ?");
 
@@ -14,11 +28,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id_usuario'])) {
 
         // Redirigir a listar_estudiantes.php después de la eliminación
         if ($page == 'drop_usuario') {
-            header("Location: ../");
+            header("Location: ../index.php");
+            exit();
         } elseif ($page == "usuario") {
-            header("Location: ../../../"); // Redirección por defecto si el código no es 'a' ni 'b'
+            header("Location: ../../../index.php");
+            exit();
         }
-        exit();
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
     }

@@ -34,7 +34,7 @@
         </form>
 
         <p class="mt-4 text-center text-sm text-gray-600">
-            ¿No tienes cuenta? <a href="register.php" class="text-blue-600 hover:underline">Regístrate aquí</a>
+            ¿No tienes cuenta? <a href="../CreateAcount/" class="text-blue-600 hover:underline">Regístrate aquí</a>
         </p>
     </div>
 

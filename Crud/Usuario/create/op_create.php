@@ -19,7 +19,7 @@ if (!is_dir($directorio_imagenes)) {
 // Procesar la imagen de perfil
 $foto_perfil_usuario = $_FILES["foto_perfil_usuario"];
 $nombre_imagen = $foto_perfil_usuario["name"];
-$ruta_imagen = $directorio_imagenes . uniqid() . "_" . basename($nombre_imagen);
+$ruta_imagen = "$directorio_imagenes" . basename($nombre_imagen);
 
 // Mover la imagen a la carpeta especificada
 if (move_uploaded_file($foto_perfil_usuario["tmp_name"], $ruta_imagen)) {
@@ -33,7 +33,7 @@ if (move_uploaded_file($foto_perfil_usuario["tmp_name"], $ruta_imagen)) {
 
     try {
         $consulta = $pdo->prepare("INSERT INTO usuarios(nombre_usuario, correo, contrasena, genero, biografia, foto_perfil) VALUES (?,?,?,?,?,?)");
-        $consulta->execute([$nombre_usuario, $correo_usuario, $contrasena_usuario, $genero_usuario, $biografia_usuario, $ruta_imagen]);
+        $consulta->execute([$nombre_usuario, $correo_usuario, $contrasena_usuario, $genero_usuario, $biografia_usuario, $nombre_imagen]);
         
         $filas_afectadas = $consulta->rowCount();
         

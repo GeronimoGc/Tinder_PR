@@ -45,11 +45,11 @@
 
     <!-- Contenedor central -->
     <div class="text-center mt-24 bg-transparent">
-        <h2 class="text-5xl font-bold mb-8 text-white">Desliza a la derecha</h2>
-        <a href="../CreateAcount/" class="block py-3 px-10 bg-red-500 text-white font-semibold text-lg rounded-full hover:bg-red-600 transition duration-300">
+        <h2 class="text-8xl font-bold mb-8 text-white">Desliza a la derecha</h2>
+    </div>
+    <a href="../CreateAcount/" class="block py-3 px-10 bg-red-500 text-white font-semibold text-lg rounded-full hover:bg-red-600 transition duration-300">
             Crear Cuenta
         </a>
-    </div>
 </body>
 
 </html>

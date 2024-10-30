@@ -1,10 +1,14 @@
 <?php
+session_start();
 include("../assets/config/op_conectar.php");
 
+// Verificar que el usuario está autenticado
+if (!isset($_SESSION['id_usuario']) || $_SESSION['id_usuario'] == 0) {
+    header("Location: ../login/");
+    exit();
+}
 
-$id_usuario = $_POST['id_usuario'];
-
-echo "$id_usuario";
+$id_usuario = $_SESSION['id_usuario'];
 
 // Obtener el siguiente usuario al que no se ha dado "me gusta" ni "no me gusta"
 $consulta_siguiente = $pdo->prepare("
@@ -31,72 +35,72 @@ $usuarios_aceptados = $consulta_aceptados->fetchAll(PDO::FETCH_ASSOC);
 
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tinder - Match</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>Swipe Card</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="icon" href="https://cdn1.iconfinder.com/data/icons/social-media-circle-6/1024/tinder-circle-512.png" type="image/x-icon">
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.2.4/dist/cdn.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
+<body class="bg-gray-100 flex flex-col items-center justify-center min-h-screen space-y-10">
 
-<body class="bg-gray-100">
+    <!-- Tarjeta del siguiente usuario -->
+    <div class="max-w-sm w-full bg-white rounded-lg shadow-lg p-6 relative" x-data="{ show: true }" x-show="show">
+        <?php if ($siguiente_usuario): ?>
+            <div class="relative h-64 w-full rounded-lg overflow-hidden mb-4">
+                <img class="w-full h-full object-cover" src="<?php echo $siguiente_usuario['foto_perfil']; ?>" alt="Foto de perfil">
+            </div>
+            <div class="text-center">
+                <h2 class="text-2xl font-semibold text-gray-800"><?php echo $siguiente_usuario['nombre_usuario']; ?></h2>
+            </div>
+            <div class="flex items-center justify-between mt-6 space-x-4">
+                <button @click="likeOrDislike('no_me_gusta')" class="bg-red-500 text-white p-4 rounded-full shadow-lg transform transition duration-300 hover:bg-red-600 hover:scale-110">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+                <button @click="likeOrDislike('me_gusta')" class="bg-green-500 text-white p-4 rounded-full shadow-lg transform transition duration-300 hover:bg-green-600 hover:scale-110">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                </button>
+            </div>
+        <?php else: ?>
+            <p class="text-center text-xl">No hay más usuarios disponibles.</p>
+        <?php endif; ?>
+    </div>
 
-    <div class="container mx-auto mt-10">
-
-        <h1 class="text-3xl font-bold text-center">Encuentra tu match</h1>
-
-        <!-- Mostrar la imagen y datos del próximo usuario -->
-        <div class="flex justify-center items-center mt-10">
-            <?php if ($siguiente_usuario): ?>
-                <div class="bg-white shadow-lg rounded-lg p-6 text-center">
-                    <img src="<?php echo $siguiente_usuario['foto_perfil']; ?>" alt="Foto de perfil" class="w-48 h-48 rounded-full mx-auto">
-                    <h2 class="text-2xl mt-4"><?php echo $siguiente_usuario['nombre_usuario']; ?></h2>
-
-                    <div class="mt-6">
-                        <button id="me_gusta" class="bg-green-500 text-white px-6 py-2 rounded-md">Me gusta</button>
-                        <button id="no_me_gusta" class="bg-red-500 text-white px-6 py-2 rounded-md">No me gusta</button>
-                    </div>
-                </div>
-            <?php else: ?>
-                <p class="text-xl">No hay más usuarios disponibles.</p>
-            <?php endif; ?>
-        </div>
-
-        <!-- Mostrar la lista de usuarios aceptados -->
-        <h2 class="text-2xl font-bold mt-10">Usuarios aceptados:</h2>
-        <div class="grid grid-cols-3 gap-4 mt-6">
+    <!-- Lista de usuarios aceptados -->
+    <div class="w-full max-w-md bg-white rounded-lg shadow-lg p-6">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Usuarios aceptados:</h2>
+        <div class="grid grid-cols-3 gap-4">
             <?php foreach ($usuarios_aceptados as $aceptado): ?>
-                <div class="bg-white shadow-md rounded-lg p-4 text-center">
-                    <img src="<?php echo $aceptado['foto_perfil']; ?>" alt="Foto de perfil" class="w-24 h-24 rounded-full mx-auto">
-                    <p class="mt-2"><?php echo $aceptado['nombre_usuario']; ?></p>
+                <div class="text-center">
+                    <img class="w-16 h-16 rounded-full object-cover mx-auto" src="<?php echo $aceptado['foto_perfil']; ?>" alt="Foto de perfil">
+                    <p class="text-gray-700 mt-2"><?php echo $aceptado['nombre_usuario']; ?></p>
                 </div>
             <?php endforeach; ?>
         </div>
-
     </div>
 
-    <!-- Script para manejar el "me gusta" o "no me gusta" con AJAX -->
     <script>
-        $(document).ready(function() {
-            $('#me_gusta, #no_me_gusta').click(function() {
-                var accion = $(this).attr('id'); // me_gusta o no_me_gusta
-                $.ajax({
-                    url: 'procesar_accion.php',
-                    type: 'POST',
-                    data: {
-                        id_usuario: <?php echo $id_usuario; ?>,
-                        id_usuario_objetivo: <?php echo $siguiente_usuario['id']; ?>,
-                        accion: accion
-                    },
-                    success: function(response) {
-                        location.reload(); // Recargar la página para mostrar el siguiente usuario
-                    }
-                });
+        function likeOrDislike(action) {
+            $.ajax({
+                url: 'procesar_accion.php',
+                type: 'POST',
+                data: {
+                    id_usuario: <?php echo $id_usuario; ?>,
+                    id_usuario_objetivo: <?php echo $siguiente_usuario ? $siguiente_usuario['id'] : 0; ?>,
+                    accion: action
+                },
+                success: function(response) {
+                    // Recargar la tarjeta del siguiente usuario
+                    location.reload();
+                }
             });
-        });
+        }
     </script>
-</body>
 
+</body>
 </html>

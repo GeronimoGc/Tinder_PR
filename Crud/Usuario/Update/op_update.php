@@ -1,10 +1,9 @@
 <?php
-include('../../../assets/config/op_conectar.php');; // Incluye el archivo de conexión
+include('../../../assets/config/op_conectar.php'); 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Obtener los datos del formulario
     $id_usuario = $_POST["id_usuario"];
-    $nombre_usuario = $_POST["nombre"];
+    $nombre_usuario = $_POST["nombre_usuario"];
     $correo_usuario = $_POST["email"];
     $contrasena_usuario = $_POST["password"];
     $genero_usuario = $_POST["genero"];
@@ -12,21 +11,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $page = $_POST["url"];
 
     try {
-        // Obtener la ruta actual de la imagen de perfil
         $consulta = $pdo->prepare("SELECT foto_perfil FROM usuarios WHERE id = ?");
         $consulta->execute([$id_usuario]);
         $usuario = $consulta->fetch(PDO::FETCH_ASSOC);
         $ruta_imagen_actual = $usuario['foto_perfil'];
 
-        // Verificar si se ha cargado una nueva imagen de perfil
         if (isset($_FILES['foto_perfil_usuario']) && $_FILES['foto_perfil_usuario']['error'] == 0) {
-            $directorio_destino = "../../../assets/uploads/"; // Directorio donde se guardarán las imágenes
+            $directorio_destino = "../../../assets/img/uploads/"; 
             $nombre_archivo = basename($_FILES['foto_perfil_usuario']['name']);
-            $nueva_ruta_imagen = $directorio_destino . uniqid() . "_" . $nombre_archivo;
+            $ruta_foto_nueva = $directorio_destino . $id_usuario . "_" . $nombre_archivo;
+            $img = $id_usuario . "_" . $nombre_archivo;
 
             // Mover el archivo subido al directorio destino
-            if (move_uploaded_file($_FILES['foto_perfil_usuario']['tmp_name'], $nueva_ruta_imagen)) {
-                // Eliminar la imagen anterior si existe y si se ha subido una nueva
+            if (move_uploaded_file($_FILES['foto_perfil_usuario']['tmp_name'], $ruta_foto_nueva)) {
+                // Eliminar la imagen anterior si existe y es diferente de la nueva
                 if (!empty($ruta_imagen_actual) && file_exists($ruta_imagen_actual)) {
                     unlink($ruta_imagen_actual);
                 }
@@ -36,31 +34,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         } else {
             // Si no se subió una nueva imagen, conservar la imagen actual
-            $nueva_ruta_imagen = $ruta_imagen_actual;
+            $img = $ruta_imagen_actual;
         }
-    } catch (PDOException $e) {
-        echo "Error: " . $e->getMessage();
-    }
 
-    try {
-        // Preparar la consulta de actualización
-        $consulta = $conexion->prepare("UPDATE usuario SET nombre_usuario=?, correo=?, contrasena=?, genero=?, biografia=?, foto_perfil=? WHERE id=?");
+        // Preparar consulta de actualización
+        $consulta = $pdo->prepare("UPDATE usuarios SET nombre_usuario = ?, correo = ?, genero = ?, biografia = ?, foto_perfil = ? WHERE id = ?");
 
-        // Ejecutar la consulta de actualización
-        $consulta->execute([$nombre_usuario, $correo_usuario, $contrasena_usuario, $genero_usuario, $biografia_usuario, $nombre_archivo, $id_usuario]);
+        // Encriptar la contraseña si se proporciona una nueva
+        if (!empty($contrasena_usuario)) {
+            $contrasena_usuario = password_hash($contrasena_usuario, PASSWORD_DEFAULT);
+            $consulta_contrasena = $pdo->prepare("UPDATE usuarios SET contrasena = ? WHERE id = ?");
+            $consulta_contrasena->execute([$contrasena_usuario, $id_usuario]);
+        }
 
+        // Ejecutar la consulta de actualización para otros datos
+        $consulta->execute([$nombre_usuario, $correo_usuario, $genero_usuario, $biografia_usuario, $img, $id_usuario]);
+
+        // Redirigir después de la actualización
         if ($page == 'f_update') {
             header("Location: ../index.php");
-            exit();
         } elseif ($page == "usuario") {
             header("Location: ../../../index.php");
-            exit();
         }
+        exit();
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
     }
 } else {
-    // Si se intenta acceder a este script sin un envío de formulario POST, redireccionar a otra página (opcional)
+    // Si se intenta acceder al script sin enviar formulario POST, redirigir a otra página (opcional)
     header("Location: index.php");
     exit();
 }

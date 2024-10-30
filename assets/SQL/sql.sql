@@ -9,6 +9,7 @@ CREATE TABLE usuarios (
     correo VARCHAR(100) NOT NULL UNIQUE,
     contrasena VARCHAR(255) NOT NULL,
     genero ENUM('hombre', 'mujer', 'otro') NOT NULL,
+    rol ENUM('admin','usuario','visita','otro'),
     biografia TEXT,
     foto_perfil VARCHAR(255),
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -46,13 +47,13 @@ CREATE TABLE mensajes (
 );
 
 -- Insertar usuarios de prueba
-INSERT INTO usuarios (nombre_usuario, correo, contrasena, genero, biografia, foto_perfil) VALUES
-('juan', 'juan@example.com', '12345', 'hombre', 'Me encanta la tecnología y los deportes', 'juan.jpg'),
-('maria', 'maria@example.com', '12345', 'mujer', 'Amo viajar y descubrir nuevas culturas', 'maria.jpg'),
-('carlos', 'carlos@example.com', '12345', 'hombre', 'Amante del cine y la música', 'carlos.jpg'),
-('ana', 'ana@example.com', '12345', 'mujer', 'Me apasiona la naturaleza y el senderismo', 'ana.jpg'),
-('luis', 'luis@example.com', '12345', 'hombre', 'Me encanta leer libros de ciencia ficción', 'luis.jpg'),
-('sofia', 'sofia@example.com', '12345', 'mujer', 'Apasionada por el arte y la fotografía', 'sofia.jpg');
+INSERT INTO usuarios (nombre_usuario, correo, contrasena, genero, rol, biografia, foto_perfil) VALUES
+('juan', 'juan@example.com', '12345', 'hombre', 'usuario', 'Me encanta la tecnología y los deportes', 'juan.jpg'),
+('maria', 'maria@example.com', '12345', 'mujer', 'usuario', 'Amo viajar y descubrir nuevas culturas', 'maria.jpg'),
+('carlos', 'carlos@example.com', '12345', 'hombre', 'usuario', 'Amante del cine y la música', 'carlos.jpg'),
+('ana', 'ana@example.com', '12345', 'mujer', 'usuario', 'Me apasiona la naturaleza y el senderismo', 'ana.jpg'),
+('luis', 'luis@example.com', '12345', 'hombre', 'usuario', 'Me encanta leer libros de ciencia ficción', 'luis.jpg'),
+('sofia', 'sofia@example.com', '12345', 'mujer', 'usuario', 'Apasionada por el arte y la fotografía', 'sofia.jpg');
 
 -- Insertar fotos de prueba
 INSERT INTO fotos (id_usuario, url_foto) VALUES

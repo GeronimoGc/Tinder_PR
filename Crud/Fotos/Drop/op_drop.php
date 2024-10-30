@@ -1,24 +1,33 @@
 <?php
-include('../../../assets/config/op_conectar.php');; // Incluye el archivo de conexión
+include('../../../assets/config/op_conectar.php'); // Conexión a la base de datos
 
 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
-    $id_estudiante = $_GET['id'];
+    $id_foto = $_GET['id'];
 
     try {
-        // Preparar la consulta de eliminación
-        $consulta = $conexion->prepare("DELETE FROM estudiante WHERE id = ?");
+        // Obtener la URL de la foto para eliminar el archivo físico
+        $consulta = $conexion->prepare("SELECT url_foto FROM fotos WHERE id = ?");
+        $consulta->execute([$id_foto]);
+        $foto = $consulta->fetch();
 
-        // Ejecutar la consulta de eliminación
-        $consulta->execute([$id_estudiante]);
+        if ($foto) {
+            // Eliminar el archivo físico
+            unlink($foto['url_foto']);
 
-        // Redirigir a listar_estudiantes.php después de la eliminación
-        header("Location: listar_estudiantes.php");
-        exit();
+            // Eliminar el registro de la base de datos
+            $consulta = $conexion->prepare("DELETE FROM fotos WHERE id = ?");
+            $consulta->execute([$id_foto]);
+
+            header("Location: ../Read/index.php");
+            exit();
+        } else {
+            echo "Foto no encontrada.";
+        }
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
     }
 } else {
-    // Si se intenta acceder a este script sin un ID de estudiante válido por GET, redireccionar a otra página (opcional)
-    header("Location: index.php");
+    header("Location: ../Read/index.php");
     exit();
 }
+?>

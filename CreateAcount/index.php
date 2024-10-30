@@ -5,15 +5,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro - Tinder</title>
+    <link rel="icon" href="https://cdn1.iconfinder.com/data/icons/social-media-circle-6/1024/tinder-circle-512.png" type="image/x-icon">
     <?php include("../assets/config/HeadTailwind.php"); ?>
+    <style>
+        body {
+            background-image: url(https://tinder.com/static/build/590275fec8cbbb0de80caa66c8450906.webp);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+
+        }
+    </style>
 </head>
 
 <body class="flex items-center justify-center min-h-screen bg-pink-100">
-    <div class="w-full max-w-md p-6 bg-white rounded-lg shadow-lg">
+    <button><a href="../index.php"></a></button>
+    <div class="w-full max-w-md p-6 bg-red-100 rounded-lg shadow-lg">
         <h2 class="text-3xl font-bold text-center text-pink-600 mb-6">Crea tu cuenta en Tinder</h2>
 
         <form action="../Crud/Usuario/create/op_create.php" method="POST" enctype="multipart/form-data">
             <input type="hidden" value="usuario" name="url">
+            <input type="hidden" value="2" name="rol">
             <!-- Nombre -->
             <label for="nombre" class="block text-sm font-semibold text-gray-700">Nombre</label>
             <input type="text" name="nombre" id="nombre" class="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500" required>
@@ -29,9 +41,10 @@
             <!-- Género -->
             <label for="genero" class="block text-sm font-semibold text-gray-700">Género</label>
             <select name="genero" id="genero" class="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500" required>
+                <option value="-1">Elige</option>
                 <option value="1">Masculino</option>
-                <option value="femenino">Femenino</option>
-                <option value="otro">Otro</option>
+                <option value="2">Femenino</option>
+                <option value="3">Otro</option>
             </select>
 
             <!-- Biografía -->

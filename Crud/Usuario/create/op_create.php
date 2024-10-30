@@ -8,6 +8,7 @@ $correo_usuario = $_POST["email"];
 $contrasena_usuario = $_POST["password"];
 $genero_usuario = $_POST["genero"];
 $biografia_usuario = $_POST["biografia"];
+$rol_usuario = $_POST["rol"];
 $page = $_POST["url"];
 
 $directorio_imagenes = "../../../assets/img/uploads/";
@@ -32,8 +33,8 @@ if (move_uploaded_file($foto_perfil_usuario["tmp_name"], $ruta_imagen)) {
 
 
     try {
-        $consulta = $pdo->prepare("INSERT INTO usuarios(nombre_usuario, correo, contrasena, genero, biografia, foto_perfil) VALUES (?,?,?,?,?,?)");
-        $consulta->execute([$nombre_usuario, $correo_usuario, $contrasena_usuario, $genero_usuario, $biografia_usuario, $nombre_imagen]);
+        $consulta = $pdo->prepare("INSERT INTO usuarios(nombre_usuario, correo, contrasena, genero, rol, biografia, foto_perfil) VALUES (?,?,?,?,?,?,?)");
+        $consulta->execute([$nombre_usuario, $correo_usuario, $contrasena_usuario, $genero_usuario, $rol_usuario, $biografia_usuario, $nombre_imagen]);
         
         $filas_afectadas = $consulta->rowCount();
         

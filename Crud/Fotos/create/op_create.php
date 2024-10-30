@@ -1,37 +1,41 @@
 <?php
-include('../../../assets/config/op_conectar.php');; // Incluye el archivo de conexión
+include('../../../assets/config/op_conectar.php'); // Conexión a la base de datos
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $documento = $_POST['documento'];
-    $nombre = $_POST['nombre'];
-    $fecha_nacimiento = $_POST['f_nac'];
-    $altura = $_POST['altura'];
-    $ciudad = $_POST['ciudad'];
-    $estrato = $_POST['estrato'];
-    $area = $_POST['area'];
-    $id_genero = $_POST['genero'];
-    $tipo_documento = $_POST['tipo_documento'];
-    $rrhh = $_POST['rrhh'];
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES['foto'])) {
+    $id_usuario = $_POST['id_usuario'];
+    $foto = $_FILES['foto'];
 
-    try {
-        $consulta = $conexion->prepare("INSERT INTO estudiante(documento, nombre, fecha_nacimiento, altura, ciudad, estrato, area, id_genero, id_tipo_documento, id_rrhh) VALUES (?,?,?,?,?,?,?,?,?,?)");
-        $consulta->execute([$documento, $nombre, $fecha_nacimiento, $altura, $ciudad, $estrato, $area, $id_genero, $tipo_documento, $rrhh]);
+    // Ruta de almacenamiento para las fotos
+    $target_dir = "../../../uploads/";
+    $target_file = $target_dir . basename($foto["name"]);
+    $uploadOk = 1;
 
-        $filas_afectadas = $consulta->rowCount();
+    // Verificar si el archivo es una imagen
+    $check = getimagesize($foto["tmp_name"]);
+    if($check !== false) {
+        $uploadOk = 1;
+    } else {
+        echo "El archivo no es una imagen.";
+        $uploadOk = 0;
+    }
 
-        if ($filas_afectadas > 0) {
-            echo "Inserción exitosa";
-            // Redirigir a una página de éxito
-            header("Location: listar_estudiantes.php");
-            exit(); // Asegura que el script se detenga después de la redirección
-        } else {
-            echo "No se pudo insertar el estudiante";
+    // Subir la foto si es válida
+    if ($uploadOk && move_uploaded_file($foto["tmp_name"], $target_file)) {
+        try {
+            $consulta = $conexion->prepare("INSERT INTO fotos (id_usuario, url_foto, fecha_subida) VALUES (?, ?, NOW())");
+            $consulta->execute([$id_usuario, $target_file]);
+
+            echo "Foto subida exitosamente.";
+            header("Location: ../Read/index.php");
+            exit();
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
         }
-    } catch (PDOException $e) {
-        echo "Error: " . $e->getMessage();
+    } else {
+        echo "Hubo un error al subir la foto.";
     }
 } else {
-    // Si se intenta acceder a este script sin un envío de formulario POST, redireccionar a otra página (opcional)
-    header("Location: listar_estudiantes.php");
+    header("Location: ../Read/index.php");
     exit();
 }
+?>

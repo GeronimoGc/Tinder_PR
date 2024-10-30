@@ -24,7 +24,7 @@ if (isset($_GET['id_usuario'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Actualizar Perfil - Tinder</title>
+    <title>Tinder Actualizar Perfil</title>
     <?php include("../../../assets/config/HeadTailwind.php"); ?>
 </head>
 
@@ -51,9 +51,10 @@ if (isset($_GET['id_usuario'])) {
             <!-- Género -->
             <label for="genero" class="block text-sm font-semibold text-gray-700">Género</label>
             <select name="genero" id="genero" class="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500" required>
+            <option value="-1" <?= $usuario['genero'] == '-1' ? 'selected' : ''; ?>>Elige</option>
                 <option value="1" <?= $usuario['genero'] == '1' ? 'selected' : ''; ?>>Masculino</option>
-                <option value="femenino" <?= $usuario['genero'] == 'femenino' ? 'selected' : ''; ?>>Femenino</option>
-                <option value="otro" <?= $usuario['genero'] == 'otro' ? 'selected' : ''; ?>>Otro</option>
+                <option value="2" <?= $usuario['genero'] == '2' ? 'selected' : ''; ?>>Femenino</option>
+                <option value="3" <?= $usuario['genero'] == '3' ? 'selected' : ''; ?>>Otro</option>
             </select>
 
             <!-- Biografía -->

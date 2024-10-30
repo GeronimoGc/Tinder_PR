@@ -1,35 +1,23 @@
 <?php
-include('../../../assets/config/op_conectar.php');; // Incluye el archivo de conexión
+include('../../../assets/config/op_conectar.php'); // Conexión a la base de datos
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Obtener los datos del formulario
-    $id_estudiante = $_POST['id_estudiante'];
-    $nombre = $_POST['nombre'];
-    $documento = $_POST['documento'];
-    $fecha_nacimiento = $_POST['f_nac'];
-    $altura = $_POST['altura'];
-    $ciudad = $_POST['ciudad'];
-    $estrato = $_POST['estrato'];
-    $area = $_POST['area'];
-    $id_genero = $_POST['genero'];
-    $id_tipo_documento = $_POST['tipo_documento'];
-    $id_rrhh = $_POST['rrhh'];
+if (isset($_GET['id'])) {
+    $id_mensaje = $_GET['id'];
+    $consulta = $conexion->prepare("SELECT * FROM mensajes WHERE id = ?");
+    $consulta->execute([$id_mensaje]);
+    $mensaje = $consulta->fetch();
 
-    try {
-        // Preparar la consulta de actualización
-        $consulta = $conexion->prepare("UPDATE estudiante SET nombre=?, documento=?, fecha_nacimiento=?, altura=?, ciudad=?, estrato=?, area=?, id_genero=?, id_tipo_documento=?, id_rrhh=? WHERE id=?");
-
-        // Ejecutar la consulta de actualización
-        $consulta->execute([$nombre, $documento, $fecha_nacimiento, $altura, $ciudad, $estrato, $area, $id_genero, $id_tipo_documento, $id_rrhh, $id_estudiante]);
-
-        // Redirigir a listar_estudiante.php después de la actualización
-        header("Location: listar_estudiantes.php");
-        exit();
-    } catch (PDOException $e) {
-        echo "Error: " . $e->getMessage();
+    if ($mensaje) {
+?>
+        <form action="op_update.php" method="POST">
+            <input type="hidden" name="id" value="<?php echo $mensaje['id']; ?>">
+            <label for="mensaje">Mensaje:</label>
+            <textarea name="mensaje" required><?php echo htmlspecialchars($mensaje['mensaje']); ?></textarea>
+            <button type="submit">Actualizar Mensaje</button>
+        </form>
+<?php
+    } else {
+        echo "Mensaje no encontrado.";
     }
-} else {
-    // Si se intenta acceder a este script sin un envío de formulario POST, redireccionar a otra página (opcional)
-    header("Location: index.php");
-    exit();
 }
+?>

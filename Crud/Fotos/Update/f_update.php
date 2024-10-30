@@ -1,35 +1,28 @@
 <?php
-include('../../../assets/config/op_conectar.php');; // Incluye el archivo de conexión
+include('../../../assets/config/op_conectar.php'); // Conexión a la base de datos
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Obtener los datos del formulario
-    $id_estudiante = $_POST['id_estudiante'];
-    $nombre = $_POST['nombre'];
-    $documento = $_POST['documento'];
-    $fecha_nacimiento = $_POST['f_nac'];
-    $altura = $_POST['altura'];
-    $ciudad = $_POST['ciudad'];
-    $estrato = $_POST['estrato'];
-    $area = $_POST['area'];
-    $id_genero = $_POST['genero'];
-    $id_tipo_documento = $_POST['tipo_documento'];
-    $id_rrhh = $_POST['rrhh'];
+if (isset($_GET['id'])) {
+    $id_foto = $_GET['id'];
+    $consulta = $conexion->prepare("SELECT * FROM fotos WHERE id = ?");
+    $consulta->execute([$id_foto]);
+    $foto = $consulta->fetch();
 
-    try {
-        // Preparar la consulta de actualización
-        $consulta = $conexion->prepare("UPDATE estudiante SET nombre=?, documento=?, fecha_nacimiento=?, altura=?, ciudad=?, estrato=?, area=?, id_genero=?, id_tipo_documento=?, id_rrhh=? WHERE id=?");
+    if ($foto) {
+?>
+        <form action="op_update.php" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="id" value="<?php echo $foto['id']; ?>">
 
-        // Ejecutar la consulta de actualización
-        $consulta->execute([$nombre, $documento, $fecha_nacimiento, $altura, $ciudad, $estrato, $area, $id_genero, $id_tipo_documento, $id_rrhh, $id_estudiante]);
+            <label for="id_usuario">ID Usuario:</label>
+            <input type="text" name="id_usuario" value="<?php echo htmlspecialchars($foto['id_usuario']); ?>" required>
 
-        // Redirigir a listar_estudiante.php después de la actualización
-        header("Location: listar_estudiantes.php");
-        exit();
-    } catch (PDOException $e) {
-        echo "Error: " . $e->getMessage();
+            <label for="foto">Actualizar Foto:</label>
+            <input type="file" name="foto" required>
+
+            <button type="submit">Actualizar Foto</button>
+        </form>
+<?php
+    } else {
+        echo "Foto no encontrada.";
     }
-} else {
-    // Si se intenta acceder a este script sin un envío de formulario POST, redireccionar a otra página (opcional)
-    header("Location: index.php");
-    exit();
 }
+?>

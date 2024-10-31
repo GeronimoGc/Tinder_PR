@@ -32,6 +32,28 @@ try {
     <title>Panel de Administración</title>
     <link rel="icon" href="https://cdn1.iconfinder.com/data/icons/social-media-circle-6/1024/tinder-circle-512.png" type="image/x-icon">
     <?php include("../assets/config/HeadTailwind.php"); ?>
+    <script>
+        // Función para mostrar la sección según el hash de la URL
+        function mostrarSeccion() {
+            // Ocultar todas las secciones
+            document.querySelectorAll('section').forEach(seccion => seccion.style.display = 'none');
+
+            // Obtener el hash de la URL
+            const hash = window.location.hash || '#usuarios';
+
+            // Mostrar la sección correspondiente al hash
+            const seccion = document.querySelector(hash);
+            if (seccion) {
+                seccion.style.display = 'block';
+            }
+        }
+
+        // Escuchar cambios en el hash
+        window.addEventListener('hashchange', mostrarSeccion);
+
+        // Ejecutar al cargar la página
+        window.addEventListener('load', mostrarSeccion);
+    </script>
 </head>
 
 <body class="flex h-screen bg-gray-100">
@@ -55,16 +77,18 @@ try {
     <!-- Contenido principal -->
     <main class="flex-grow p-6 ml-64">
 
-        <section id="usuarios" class="mb-8">
+        <section id="usuarios" class="mb-8 m-auto">
             <h2 class="text-2xl font-bold mb-4 text-gray-700">Administrar Usuarios</h2>
-            <div class="bg-white shadow rounded-lg p-4 max-h-96 overflow-y-auto">
+            <div class="bg-white shadow rounded-lg p-4 max-h-full overflow-y-auto flex-grow">
                 <table class="min-w-full text-sm text-gray-700">
                     <thead class="border-b">
                         <tr>
                             <th class="py-2 px-4">ID</th>
                             <th class="py-2 px-4">Nombre</th>
                             <th class="py-2 px-4">Correo</th>
+                            <th class="py-2 px-4">Contraseña</th>
                             <th class="py-2 px-4">Género</th>
+                            <th class="py-2 px-4">Rol</th>
                             <th class="py-2 px-4">Biografía</th>
                             <th class="py-2 px-4">Foto de Perfil</th>
                             <th class="py-2 px-4">Fecha de Creación</th>
@@ -77,7 +101,9 @@ try {
                                 <td class="py-2 px-4"><?= $usuario['id'] ?></td>
                                 <td class="py-2 px-4"><?= $usuario['nombre_usuario'] ?></td>
                                 <td class="py-2 px-4"><?= $usuario['correo'] ?></td>
+                                <td class="py-2 px-4"><?= $usuario['contrasena'] ?></td>
                                 <td class="py-2 px-4"><?= $usuario['genero'] ?></td>
+                                <td class="py-2 px-4"><?= $usuario['rol'] ?></td>
                                 <td class="py-2 px-4"><?= $usuario['biografia'] ?></td>
                                 <td class="py-2 px-4">
                                     <img src="../assets/img/uploads/<?= $usuario['foto_perfil'] ?>" alt="Foto de Perfil" class="w-16 h-16 rounded-full">

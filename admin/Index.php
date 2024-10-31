@@ -37,23 +37,23 @@ try {
 <body class="flex h-screen bg-gray-100">
 
     <!-- Sidebar de navegación -->
-    <aside class="w-64 bg-white border-r border-gray-200 flex flex-col">
-        <div class="flex items-center justify-center py-4 border-b">
-            <img src="https://logo-marque.com/wp-content/uploads/2020/09/Tinder-Logo.png" alt="Logo" class="h-12">
-            <span class="ml-2 font-semibold text-xl text-gray-700">Admin Panel</span>
-        </div>
-        <nav class="flex-grow p-4">
-            <ul class="space-y-4">
-                <li><a href="#usuarios" class="text-gray-600 hover:text-red-500">Usuarios</a></li>
-                <li><a href="#mensajes" class="text-gray-600 hover:text-red-500">Mensajes</a></li>
-                <li><a href="#fotos" class="text-gray-600 hover:text-red-500">Fotos</a></li>
-                <li><a href="#coincidencias" class="text-gray-600 hover:text-red-500">Coincidencias</a></li>
-            </ul>
-        </nav>
-    </aside>
+    <aside class="w-64 bg-white border-r border-gray-200 flex flex-col fixed top-0 left-0 h-screen">
+    <div class="flex items-center justify-center py-4 border-b">
+        <img src="https://logo-marque.com/wp-content/uploads/2020/09/Tinder-Logo.png" alt="Logo" class="h-12">
+        <span class="ml-2 font-semibold text-xl text-gray-700">Admin Panel</span>
+    </div>
+    <nav class="flex-grow p-4">
+        <ul class="space-y-4">
+            <li><a href="#usuarios" class="text-gray-600 hover:text-red-500">Usuarios</a></li>
+            <li><a href="#mensajes" class="text-gray-600 hover:text-red-500">Mensajes</a></li>
+            <li><a href="#fotos" class="text-gray-600 hover:text-red-500">Fotos</a></li>
+            <li><a href="#coincidencias" class="text-gray-600 hover:text-red-500">Coincidencias</a></li>
+        </ul>
+    </nav>
+</aside>
 
     <!-- Contenido principal -->
-    <main class="flex-grow p-6">
+    <main class="flex-grow p-6 ml-64">
 
         <section id="usuarios" class="mb-8">
             <h2 class="text-2xl font-bold mb-4 text-gray-700">Administrar Usuarios</h2>
@@ -84,10 +84,10 @@ try {
                                 </td>
                                 <td class="py-2 px-4"><?= $usuario['fecha_creacion'] ?></td>
                                 <td class="py-2 px-4">
-                                    <a href="usuario/update/f_update.php?id_usuario=<?= $usuario['id'] ?>" class="text-pink-600 hover:underline">Actualizar</a>
+                                    <a href="usuario/update/?id_usuario=<?= $usuario['id'] ?>&url=drop_admin" class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600">Actualizar</a>
                                 </td>
                                 <td class="py-2 px-4">
-                                    <a href="usuario/Drop/op_drop.php?id_usuario=<?= $usuario['id'] ?>&url=drop_usuario" class="text-red-600 hover:underline">Eliminar</a>
+                                    <a href="usuario/Drop/?id_usuario=<?= $usuario['id'] ?>&url=drop_admin" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Eliminar</a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -119,12 +119,11 @@ try {
                                 <td class="px-4 py-2"><?= $resultado_mensaje["id_receptor"] ?></td>
                                 <td class="px-4 py-2"><?= $resultado_mensaje["mensaje"] ?></td>
                                 <td class="px-4 py-2"><?= $resultado_mensaje["fecha_envio"] ?></td>
-                                <td class="px-4 py-2">
                                 <td class="py-2 px-4">
-                                    <a href="usuario/update/f_update.php?id_usuario=<?= $usuario['id'] ?>" class="text-pink-600 hover:underline">Actualizar</a>
+                                    <a href="mensaje/update/?id_mensaje=<?= $usuario['id'] ?>&url=update_admin" class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600">Actualizar</a>
                                 </td>
                                 <td class="py-2 px-4">
-                                    <a href="usuario/Drop/op_drop.php?id_usuario=<?= $usuario['id'] ?>&url=drop_usuario" class="text-red-600 hover:underline">Eliminar</a>
+                                    <a href="mensaje/Drop/?id_mensaje=<?= $usuario['id'] ?>&url=drop_admin" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Eliminar</a>
                                 </td>
                                 </td>
                             </tr>
@@ -140,47 +139,66 @@ try {
                 <table class="min-w-full text-sm text-gray-700">
                     <thead class="border-b">
                         <tr>
-                            <th class="px-4 py-2 text-left">ID Foto</th>
-                            <th class="px-4 py-2 text-left">Usuario</th>
-                            <th class="px-4 py-2 text-left">Vista previa</th>
-                            <th class="px-4 py-2 text-left">Acciones</th>
+                            <th class="px-4 py-2 text-left">ID</th>
+                            <th class="px-4 py-2 text-left">ID Usuario</th>
+                            <th class="px-4 py-2 text-left">Nombre Foto</th>
+                            <th class="px-4 py-2 text-left">Foto</th>
+                            <th class="px-4 py-2 text-left">Fecha subida</th>
+                            <th class="py-2 px-4" colspan="2">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="border-b">
-                            <td class="px-4 py-2">456</td>
-                            <td class="px-4 py-2">Usuario 123</td>
-                            <td class="px-4 py-2"><img src="https://via.placeholder.com/50" alt="Foto" class="h-10 w-10"></td>
-                            <td class="px-4 py-2">
-                                <button class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Eliminar</button>
-                            </td>
-                        </tr>
+                        <?php foreach ($resultado_foto as $foto): ?>
+                            <tr class="border-b">
+                                <td class="px-4 py-2"><?= $foto["id"] ?></td>
+                                <td class="px-4 py-2"><?= $foto["id_usuario"] ?></td>
+                                <td class="px-4 py-2"><?= $foto["url_foto"] ?></td>
+                                <td class="px-4 py-2">
+                                    <img src="../assets/img/uploads/<?= $foto['url_foto'] ?>" alt="Foto" class="w-16 h-16 rounded-full">
+                                </td>
+                                <td class="px-4 py-2"><?= $foto["fecha_subida"] ?></td>
+                                <td class="py-2 px-4">
+                                    <a href="foto/update/?id_foto=<?= $foto['id'] ?>&url=update_admin" class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600">Actualizar</a>
+                                </td>
+                                <td class="py-2 px-4">
+                                    <a href="foto/Drop/?id_foto=<?= $foto['id'] ?>&url=drop_admin" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Eliminar</a>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>
         </section>
 
-        <section id="coincidencias">
+        <section id="coincidencias" class="mb-8">
             <h2 class="text-2xl font-bold mb-4 text-gray-700">Administrar Coincidencias</h2>
             <div class="bg-white shadow rounded-lg p-4 max-h-96 overflow-y-auto">
                 <table class="min-w-full text-sm text-gray-700">
                     <thead class="border-b">
                         <tr>
-                            <th class="px-4 py-2 text-left">ID Coincidencia</th>
-                            <th class="px-4 py-2 text-left">Usuario 1</th>
-                            <th class="px-4 py-2 text-left">Usuario 2</th>
-                            <th class="px-4 py-2 text-left">Acciones</th>
+                            <th class="px-4 py-2 text-left">ID</th>
+                            <th class="px-4 py-2 text-left">ID Usuario</th>
+                            <th class="px-4 py-2 text-left">ID Usuario Objetivo</th>
+                            <th class="px-4 py-2 text-left">Accion</th>
+                            <th class="px-4 py-2 text-left">Fecha Coincidencia</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="border-b">
-                            <td class="px-4 py-2">789</td>
-                            <td class="px-4 py-2">Usuario 123</td>
-                            <td class="px-4 py-2">Usuario 456</td>
-                            <td class="px-4 py-2">
-                                <button class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Eliminar</button>
-                            </td>
-                        </tr>
+                        <?php foreach ($resultado_coincidencia as $coincidencia): ?>
+                            <tr class="border-b">
+                                <td class="px-4 py-2"><?= $coincidencia["id"] ?></td>
+                                <td class="px-4 py-2"><?= $coincidencia["id_usuario"] ?></td>
+                                <td class="px-4 py-2"><?= $coincidencia["id_usuario_objetivo"] ?></td>
+                                <td class="px-4 py-2"><?= $coincidencia["accion"] ?></td>
+                                <td class="px-4 py-2"><?= $coincidencia["fecha_coincidencia"] ?></td>
+                                <td class="py-2 px-4">
+                                    <a href="coincidencia/update/?id_foto=<?= $coincidencia['id'] ?>&url=update_admin" class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600">Actualizar</a>
+                                </td>
+                                <td class="py-2 px-4">
+                                    <a href="coincidencia/Drop/?id_foto=<?= $coincidencia['id'] ?>&url=drop_admin" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Eliminar</a>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>

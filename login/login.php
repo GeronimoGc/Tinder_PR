@@ -13,7 +13,7 @@
             background-image: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)), url(https://tinder.com/static/build/590275fec8cbbb0de80caa66c8450906.webp);
             background-size: cover;
             background-position: center;
-            background-repeat:
+            background-repeat: no-repeat;
         } 
     </style>
 </head>

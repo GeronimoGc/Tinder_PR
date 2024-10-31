@@ -4,6 +4,7 @@ include("../../../assets/config/op_conectar.php"); // Incluye la conexión
 // Verificar si se ha pasado un ID de usuario para actualizar
 if (isset($_GET['id_usuario'])) {
     $id_usuario = $_GET['id_usuario'];
+    $url = $_GET['url'];
 
     // Obtener los datos del usuario de la base de datos
     $consulta = $pdo->prepare("SELECT * FROM usuarios WHERE id = ?");
@@ -25,6 +26,7 @@ if (isset($_GET['id_usuario'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tinder Actualizar Perfil</title>
+    <link rel="icon" href="https://cdn1.iconfinder.com/data/icons/social-media-circle-6/1024/tinder-circle-512.png" type="image/x-icon">
     <?php include("../../../assets/config/HeadTailwind.php"); ?>
 </head>
 
@@ -33,7 +35,7 @@ if (isset($_GET['id_usuario'])) {
         <h2 class="text-3xl font-bold text-center text-pink-600 mb-6">Actualizar Perfil</h2>
 
         <form action="op_update.php" method="POST" enctype="multipart/form-data">
-            <input type="hidden" name="url" value="f_update">
+            <input type="hidden" name="url" value="<?= $url; ?>">
             <input type="hidden" name="id_usuario" value="<?= $id_usuario; ?>">
             
             <!-- Nombre -->

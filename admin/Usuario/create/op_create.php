@@ -9,7 +9,7 @@ $contrasena_usuario = $_POST["password"];
 $genero_usuario = $_POST["genero"];
 $biografia_usuario = $_POST["biografia"];
 $rol_usuario = $_POST["rol"];
-$page = $_POST["url"];
+$url = $_GET['url'];
 
 $directorio_imagenes = "../../../assets/img/uploads/";
 if (!is_dir($directorio_imagenes)) {
@@ -41,10 +41,10 @@ if (move_uploaded_file($foto_perfil_usuario["tmp_name"], $ruta_imagen)) {
         if ($filas_afectadas > 0) {
             echo "Inserción exitosa";
             // Redirigir a una página de éxito
-            if ($page == 'usuario') {
-                header("Location: ../../../");
-            } elseif ( $page == "f_create") {
+            if ($url == 'admin') {
                 header("Location: ../");
+            } elseif ( $url == "usuario") {
+                header("Location: ../../../");
             }
             exit(); // Asegura que el script se detenga después de la redirección
         } else {

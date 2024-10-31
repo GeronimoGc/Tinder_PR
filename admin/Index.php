@@ -84,10 +84,10 @@ try {
                                 </td>
                                 <td class="py-2 px-4"><?= $usuario['fecha_creacion'] ?></td>
                                 <td class="py-2 px-4">
-                                    <a href="usuario/update/?id_usuario=<?= $usuario['id'] ?>&url=drop_admin" class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600">Actualizar</a>
+                                    <a href="usuario/update/?id_usuario=<?= $usuario['id'] ?>&url=admin" class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600">Actualizar</a>
                                 </td>
                                 <td class="py-2 px-4">
-                                    <a href="usuario/Drop/?id_usuario=<?= $usuario['id'] ?>&url=drop_admin" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Eliminar</a>
+                                    <a href="usuario/Drop/?id_usuario=<?= $usuario['id'] ?>&url=admin" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Eliminar</a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -120,10 +120,10 @@ try {
                                 <td class="px-4 py-2"><?= $resultado_mensaje["mensaje"] ?></td>
                                 <td class="px-4 py-2"><?= $resultado_mensaje["fecha_envio"] ?></td>
                                 <td class="py-2 px-4">
-                                    <a href="mensaje/update/?id_mensaje=<?= $usuario['id'] ?>&url=update_admin" class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600">Actualizar</a>
+                                    <a href="mensaje/update/?id_mensaje=<?= $usuario['id'] ?>&url=admin" class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600">Actualizar</a>
                                 </td>
                                 <td class="py-2 px-4">
-                                    <a href="mensaje/Drop/?id_mensaje=<?= $usuario['id'] ?>&url=drop_admin" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Eliminar</a>
+                                    <a href="mensaje/Drop/?id_mensaje=<?= $usuario['id'] ?>&url=admin" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Eliminar</a>
                                 </td>
                                 </td>
                             </tr>
@@ -158,10 +158,10 @@ try {
                                 </td>
                                 <td class="px-4 py-2"><?= $foto["fecha_subida"] ?></td>
                                 <td class="py-2 px-4">
-                                    <a href="foto/update/?id_foto=<?= $foto['id'] ?>&url=update_admin" class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600">Actualizar</a>
+                                    <a href="foto/update/?id_foto=<?= $foto['id'] ?>&url=admin" class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600">Actualizar</a>
                                 </td>
                                 <td class="py-2 px-4">
-                                    <a href="foto/Drop/?id_foto=<?= $foto['id'] ?>&url=drop_admin" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Eliminar</a>
+                                    <a href="foto/Drop/?id_foto=<?= $foto['id'] ?>&url=admin" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Eliminar</a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -192,10 +192,10 @@ try {
                                 <td class="px-4 py-2"><?= $coincidencia["accion"] ?></td>
                                 <td class="px-4 py-2"><?= $coincidencia["fecha_coincidencia"] ?></td>
                                 <td class="py-2 px-4">
-                                    <a href="coincidencia/update/?id_foto=<?= $coincidencia['id'] ?>&url=update_admin" class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600">Actualizar</a>
+                                    <a href="coincidencia/update/?id_foto=<?= $coincidencia['id'] ?>&url=admin" class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600">Actualizar</a>
                                 </td>
                                 <td class="py-2 px-4">
-                                    <a href="coincidencia/Drop/?id_foto=<?= $coincidencia['id'] ?>&url=drop_admin" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Eliminar</a>
+                                    <a href="coincidencia/Drop/?id_foto=<?= $coincidencia['id'] ?>&url=admin" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Eliminar</a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

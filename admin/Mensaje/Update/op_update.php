@@ -4,6 +4,7 @@ include('../../../assets/config/op_conectar.php'); // Conexión a la base de dat
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $id = $_POST['id'];
     $mensaje = $_POST['mensaje'];
+    $url = $_GET['url'];
 
     try {
         $consulta = $conexion->prepare("UPDATE mensajes SET mensaje = ? WHERE id = ?");

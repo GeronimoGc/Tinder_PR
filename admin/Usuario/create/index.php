@@ -1,3 +1,8 @@
+<?php 
+
+$url = $_GET['url'];
+
+?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -14,7 +19,7 @@
         <h2 class="text-3xl font-bold text-center text-pink-600 mb-6">Crea tu cuenta en Tinder</h2>
 
         <form action="op_create.php" method="POST" enctype="multipart/form-data">
-            <input type="hidden" name="url" value="f_create">
+            <input type="hidden" name="url" value="<?= $url; ?>">
             <!-- Nombre -->
             <label for="nombre" class="block text-sm font-semibold text-gray-700">Nombre</label>
             <input type="text" name="nombre" id="nombre" class="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500" required>

@@ -3,6 +3,7 @@ include('../../../assets/config/op_conectar.php'); // Conexión a la base de dat
 
 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
     $id_mensaje = $_GET['id'];
+    $url = $_GET['url'];
 
     try {
         $consulta = $conexion->prepare("DELETE FROM mensajes WHERE id = ?");

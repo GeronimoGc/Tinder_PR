@@ -3,7 +3,7 @@ include('../../../assets/config/op_conectar.php');; // Incluye el archivo de con
 
 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id_usuario'])) {
     $id_usuario = $_GET['id_usuario'];
-    $page = $_GET["url"];
+    $url = $_GET["url"];
 
     try {
 
@@ -27,10 +27,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id_usuario'])) {
         $consulta->execute([$id_usuario]);
 
         // Redirigir a listar_estudiantes.php después de la eliminación
-        if ($page == 'drop_usuario') {
+        if ($url == 'admin') {
             header("Location: ../index.php");
             exit();
-        } elseif ($page == "usuario") {
+        } elseif ($url == "usuario") {
             header("Location: ../../../index.php");
             exit();
         }

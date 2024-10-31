@@ -51,8 +51,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $consulta->execute([$nombre_usuario, $correo_usuario, $genero_usuario, $biografia_usuario, $img, $id_usuario]);
 
         // Redirigir después de la actualización
-        if ($page == 'f_update') {
-            header("Location: ../index.php");
+        if ($page == 'admin') {
+            header("Location: ../../index.php");
         } elseif ($page == "usuario") {
             header("Location: ../../../index.php");
         }

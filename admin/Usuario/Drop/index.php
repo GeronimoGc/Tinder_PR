@@ -1,44 +1,43 @@
 <?php
-include('../../../assets/config/op_conectar.php');; // Incluye el archivo de conexión
+include('../../../assets/config/op_conectar.php'); // Incluye el archivo de conexión
 
 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id_usuario'])) {
     $id_usuario = $_GET['id_usuario'];
     $url = $_GET["url"];
+    $href_img = "../../../assets/img/uploads/";
 
     try {
-
-        // Obtiene el nombre de la imagen de perfil
+        // Obtiene el nombre del archivo de imagen de perfil
         $consulta = $pdo->prepare("SELECT foto_perfil FROM usuarios WHERE id = ?");
         $consulta->execute([$id_usuario]);
-        $foto = $consulta->fetchall(PDO::FETCH_ASSOC);
+        $usuario = $consulta->fetch(PDO::FETCH_ASSOC);
 
+        // Verifica si existe la imagen y la elimina
         if ($usuario && !empty($usuario['foto_perfil'])) {
-            // Elimina la imagen de perfil del servidor usando la ruta completa
-            if (file_exists($usuario['foto_perfil'])) {
-                unlink($usuario['foto_perfil']);
+            $ruta_completa_imagen = $href_img . $usuario['foto_perfil'];
+            if (file_exists($ruta_completa_imagen)) {
+                unlink($ruta_completa_imagen);
             }
         }
 
-        
-        // Preparar la consulta de eliminación
-        $consulta = $pdo->prepare("DELETE FROM usuarios WHERE id = ?");
 
-        // Ejecutar la consulta de eliminación
+        // Preparar y ejecutar la consulta de eliminación
+        $consulta = $pdo->prepare("DELETE FROM usuarios WHERE id = ?");
         $consulta->execute([$id_usuario]);
 
-        // Redirigir a listar_estudiantes.php después de la eliminación
+        // Redirigir después de la eliminación
         if ($url == 'admin') {
-            header("Location: ../index.php");
+            header("Location: ../../");
             exit();
         } elseif ($url == "usuario") {
-            header("Location: ../../../index.php");
+            header("Location: ../../../");
             exit();
         }
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
     }
 } else {
-    // Si se intenta acceder a este script sin un ID de estudiante válido por GET, redireccionar a otra página (opcional)
+    // Redireccionar si no hay ID válido
     header("Location: ../../../");
     exit();
 }

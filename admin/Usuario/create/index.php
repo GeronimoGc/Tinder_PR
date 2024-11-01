@@ -1,8 +1,4 @@
-<?php 
-
-$url = $_GET['url'];
-
-?>
+<?php $url = $_GET['url']; ?>
 <!DOCTYPE html>
 <html lang="es">
 

@@ -1,5 +1,5 @@
 <?php
-include('../../../assets/config/op_conectar.php'); 
+include('../../../assets/config/op_conectar.php');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $id_usuario = $_POST["id_usuario"];
@@ -17,16 +17,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $ruta_imagen_actual = $usuario['foto_perfil'];
 
         if (isset($_FILES['foto_perfil_usuario']) && $_FILES['foto_perfil_usuario']['error'] == 0) {
-            $directorio_destino = "../../../assets/img/uploads/"; 
+            $destino = "../../../assets/img/uploads/";
             $nombre_archivo = basename($_FILES['foto_perfil_usuario']['name']);
-            $ruta_foto_nueva = $directorio_destino . $id_usuario . "_" . $nombre_archivo;
+            $ruta_foto_nueva = $destino . $id_usuario . "_" . $nombre_archivo;
             $img = $id_usuario . "_" . $nombre_archivo;
 
             // Mover el archivo subido al directorio destino
             if (move_uploaded_file($_FILES['foto_perfil_usuario']['tmp_name'], $ruta_foto_nueva)) {
                 // Eliminar la imagen anterior si existe y es diferente de la nueva
-                if (!empty($ruta_imagen_actual) && file_exists($ruta_imagen_actual)) {
-                    unlink($ruta_imagen_actual);
+                if (!empty($destino . $ruta_imagen_actual) && file_exists($destino . $ruta_imagen_actual)) {
+                    unlink($destino . $ruta_imagen_actual);
                 }
             } else {
                 echo "Error al subir la nueva imagen de perfil.";
@@ -42,7 +42,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Encriptar la contraseña si se proporciona una nueva
         if (!empty($contrasena_usuario)) {
-            $contrasena_usuario = password_hash($contrasena_usuario, PASSWORD_DEFAULT);
             $consulta_contrasena = $pdo->prepare("UPDATE usuarios SET contrasena = ? WHERE id = ?");
             $consulta_contrasena->execute([$contrasena_usuario, $id_usuario]);
         }
@@ -52,16 +51,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Redirigir después de la actualización
         if ($page == 'admin') {
-            header("Location: ../../index.php");
+            header("Location: ../../");
         } elseif ($page == "usuario") {
-            header("Location: ../../../index.php");
+            header("Location: ../../../");
         }
         exit();
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
     }
 } else {
-    // Si se intenta acceder al script sin enviar formulario POST, redirigir a otra página (opcional)
-    header("Location: index.php");
+    header("Location: ../../../");
     exit();
 }

@@ -9,7 +9,7 @@ CREATE TABLE usuarios (
     correo VARCHAR(100) NOT NULL UNIQUE,
     contrasena VARCHAR(255) NOT NULL,
     genero ENUM('hombre', 'mujer', 'otro') NOT NULL,
-    rol ENUM('admin','usuario','visita','otro'),
+    rol ENUM('admin','usuario'),
     biografia TEXT,
     foto_perfil VARCHAR(255),
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -48,6 +48,7 @@ CREATE TABLE mensajes (
 
 -- Insertar usuarios de prueba
 INSERT INTO usuarios (nombre_usuario, correo, contrasena, genero, rol, biografia, foto_perfil) VALUES
+('root', 'root@root.com', 'root', 'hombre', 'admin', 'root', '../root.png'),
 ('juan', 'juan@example.com', '12345', 'hombre', 'usuario', 'Me encanta la tecnología y los deportes', 'juan.jpg'),
 ('maria', 'maria@example.com', '12345', 'mujer', 'usuario', 'Amo viajar y descubrir nuevas culturas', 'maria.jpg'),
 ('carlos', 'carlos@example.com', '12345', 'hombre', 'usuario', 'Amante del cine y la música', 'carlos.jpg'),
@@ -57,29 +58,29 @@ INSERT INTO usuarios (nombre_usuario, correo, contrasena, genero, rol, biografia
 
 -- Insertar fotos de prueba
 INSERT INTO fotos (id_usuario, url_foto) VALUES
-(1, 'juan1.jpg'),
-(1, 'juan2.jpg'),
-(2, 'maria1.jpg'),
-(2, 'maria2.jpg'),
-(3, 'carlos1.jpg'),
-(4, 'ana1.jpg'),
-(5, 'luis1.jpg'),
-(6, 'sofia1.jpg');
+(2, 'juan1.jpg'),
+(2, 'juan2.jpg'),
+(3, 'maria1.jpg'),
+(3, 'maria2.jpg'),
+(4, 'carlos1.jpg'),
+(5, 'ana1.jpg'),
+(6, 'luis1.jpg'),
+(7, 'sofia1.jpg');
 
 -- Insertar coincidencias de prueba
 -- Juan da "me gusta" a María y a Ana
 INSERT INTO coincidencias (id_usuario, id_usuario_objetivo, accion) VALUES
-(1, 2, 'me_gusta'),
-(1, 4, 'me_gusta');
+(2, 3, 'me_gusta'),
+(2, 5, 'me_gusta');
 
 -- María da "me gusta" a Juan
 INSERT INTO coincidencias (id_usuario, id_usuario_objetivo, accion) VALUES
-(2, 1, 'me_gusta');
+(3, 2, 'me_gusta');
 
 -- Carlos da "no me gusta" a Sofía
 INSERT INTO coincidencias (id_usuario, id_usuario_objetivo, accion) VALUES
-(3, 6, 'no_me_gusta');
+(4, 7, 'no_me_gusta');
 
 -- Ana da "me gusta" a Luis
 INSERT INTO coincidencias (id_usuario, id_usuario_objetivo, accion) VALUES
-(4, 5, 'me_gusta');
+(5, 6, 'me_gusta');

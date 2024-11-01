@@ -8,16 +8,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST["password"];
 
     try {
-        $consulta = $pdo->prepare("SELECT COUNT(*) AS existe, id FROM usuarios WHERE correo = ? AND contrasena = ?");
+        $consulta = $pdo->prepare("SELECT COUNT(*) AS existe, id, rol FROM usuarios WHERE correo = ? AND contrasena = ?");
         $consulta->execute([$email, $password]);
         $resultado = $consulta->fetch(PDO::FETCH_ASSOC);
         if ($resultado["existe"] > 0) {
-            
+
             $id_usuario = $resultado["id"];
+            $url = $resultado["rol"];
             $_SESSION["id_usuario"] = $id_usuario;
             echo "
             <form id='redirectForm' action='../' method='POST'>
                 <input type='hidden' name='id_usuario' value='$id_usuario'>
+                <input type='hidden' name='url' value='$url'>
             </form>
             <script>
                 document.getElementById('redirectForm').submit();

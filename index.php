@@ -1,21 +1,39 @@
 <?php
+$id_usuario = null;
+$url = null;
 
 include("assets/config/op_conectar.php");
 
 $id_usuario = $_POST['id_usuario'];
 $url = $_POST['url'];
-
-
-if (isset($_POST['id_usuario'])) {
-    $_SESSION['id_usuario'] = (int)$_POST['id_usuario'];
+if (isset($id_usuario)) {
     if ($url == 'admin') {
-        header('Location: admin/');
+        echo "
+        <form id='redirectForm' action='admin/' method='POST'>
+            <input type='hidden' name='id_usuario' value='$id_usuario'>
+            <input type='hidden' name='url' value='$url'>
+        </form>
+        <script>
+            document.getElementById('redirectForm').submit();
+        </script>";
+        exit();
     } else if ($url == 'usuario') {
-        header('Location: home/');
+        echo "
+        <form id='redirectForm' action='home/' method='POST'>
+            <input type='hidden' name='id_usuario' value='$id_usuario'>
+            <input type='hidden' name='url' value='$url'>
+        </form>
+        <script>
+            document.getElementById('redirectForm').submit();
+        </script>";
+        exit();
+    } else {
+        header('Location: login/');
+        exit();
     }
 }
 
-if (!isset($_SESSION['id_usuario']) || $_SESSION['id_usuario'] == 0) {
+if (!isset($id_usuario) || $id_usuario == 0) {
     header("Location: login/");
     exit();
 }

@@ -1,5 +1,28 @@
 <?php
-include('../assets/config/op_conectar.php'); // Incluye el archivo de conexión
+include('../assets/config/op_conectar.php');
+include('../assets/config/op_validar.php');
+
+$id_usuario = $_POST['id_usuario'];
+$url = $_POST['url'];
+
+if (isset($id_usuario)) {
+
+    if ($url == 'admin') {
+        $consulta_Admin = $pdo->prepare("SELECT * FROM usuarios WHERE id = ?");
+        $consulta_Admin->execute([$id_usuario]);
+        $resultado_admin = $consulta_Admin->fetch(PDO::FETCH_ASSOC);
+    } else if ($url == 'usuario') {
+        echo "
+        <form id='redirectForm' action='../../home' method='POST'>
+            <input type='hidden' name='id_usuario' value='$id_usuario'>
+            <input type='hidden' name='url' value='$url'>
+        </form>
+        <script>
+            document.getElementById('redirectForm').submit();
+        </script>";
+        exit();
+    }
+}
 
 try {
     $listar_usuario = $pdo->prepare("SELECT * FROM usuarios");
@@ -56,15 +79,35 @@ try {
     </script>
 </head>
 
-<body class="bg-gray-100 h-screen">
+<body class="bg-gray-100 h-screen overflow-y-hidden">
 
-    <!-- Sidebar de navegación -->
-    <aside class="w-64 bg-white border-r border-gray-200 flex flex-col fixed top-0 left-0 h-screen">
-        <div class="flex items-center justify-center py-4 border-b">
-            <img src="https://logo-marque.com/wp-content/uploads/2020/09/Tinder-Logo.png" alt="Logo" class="h-12">
-            <span class="ml-2 font-semibold text-xl text-gray-700">Admin Panel</span>
+    <header class="w-full bg-white border-b border-gray-200 fixed top-0 left-0 z-10 flex justify-between items-center h-20 px-6 shadow-sm">
+        <div class="flex items-center space-x-4">
+            <img src="https://logo-marque.com/wp-content/uploads/2020/09/Tinder-Logo.png" alt="Logo" class="h-8">
+            <span class="font-semibold text-lg text-gray-700">Panel de Administración</span>
         </div>
-        <nav class="flex-grow p-4">
+
+        <div class="flex items-center space-x-20">
+            <div class="flex items-center space-x-4">
+                <a href="#" class="text-gray-600 hover:text-red-500">Inicio</a>
+                <a href="#" class="text-gray-600 hover:text-red-500">Perfil2</a>
+                <a href="../login/" class="text-gray-600 hover:text-red-500">Cerrar Sesión</a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <p><?= $resultado_admin['nombre_usuario'] ?></p>
+
+                <?php if (isset($resultado_admin['foto_perfil']) && !empty($resultado_admin['foto_perfil'])) : ?>
+                    <img src='../assets/img/uploads/<?= $resultado_admin['foto_perfil'] ?>' alt="Imagen de perfil" class="h-12 w-12 rounded-full object-cover" />
+                <?php else : ?>
+                    <img src='../assets/img/user-default.jpg' alt="Imagen de perfil predeterminada" class="h-12 w-12 rounded-full object-cover" />
+                <?php endif; ?>
+            </div>
+        </div>
+    </header>
+
+    <aside class="w-64 bg-white border-r border-gray-200 flex flex-col fixed top-0 left-0 h-screen">
+
+        <nav class="flex-grow p-4 mt-20">
             <ul class="space-y-4">
                 <li><a href="#usuarios" class="text-gray-600 hover:text-red-500">Usuarios</a></li>
                 <li><a href="#mensajes" class="text-gray-600 hover:text-red-500">Mensajes</a></li>
@@ -72,12 +115,12 @@ try {
                 <li><a href="#coincidencias" class="text-gray-600 hover:text-red-500">Coincidencias</a></li>
             </ul>
         </nav>
+
     </aside>
 
-    <!-- Contenido principal -->
-    <main class="flex-grow p-6 ml-64">
+    <main class="flex-grow p-6 ml-64 mt-16">
 
-        <section id="usuarios" class="mb-8">
+        <section id="usuarios" class="">
             <h2 class="text-2xl font-bold mb-4 text-gray-700">Administrar Usuarios</h2>
             <div class="p-4 h-auto rounded-lg">
                 <a href="usuario/create/" class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600">Crear Usuario</a>
@@ -125,7 +168,7 @@ try {
             </div>
         </section>
 
-        <section id="mensajes" class="mb-8">
+        <section id="mensajes" class="">
             <h2 class="text-2xl font-bold mb-4 text-gray-700">Administrar Mensaje</h2>
             <div class="p-4 h-auto rounded-lg">
                 <a href="mensaje/create/" class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600">Crear Mensaje</a>
@@ -163,7 +206,7 @@ try {
             </div>
         </section>
 
-        <section id="fotos" class="mb-8">
+        <section id="fotos" class="">
             <h2 class="text-2xl font-bold mb-4 text-gray-700">Administrar Fotos</h2>
             <div class="p-4 h-auto rounded-lg">
                 <a href="foto/create/" class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600">Crear Fotos</a>
@@ -203,7 +246,7 @@ try {
             </div>
         </section>
 
-        <section id="coincidencias" class="mb-8">
+        <section id="coincidencias" class="">
             <h2 class="text-2xl font-bold mb-4 text-gray-700">Administrar Coincidencias</h2>
             <div class="p-4 h-auto rounded-lg">
                 <a href="coincidencia/create/" class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600">Crear Coincidencias</a>
@@ -246,54 +289,3 @@ try {
 </body>
 
 </html>
-
-<!-- 
-<section id="usuarios" class="mb-8">
-    <h2 class="text-2xl font-bold mb-4 text-gray-700">Administrar Usuarios</h2>
-    <div class="p-4 h-auto rounded-lg">
-        <a href="usuario/create/" class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600">Crear Usuario</a>
-    </div>
-    <div class="bg-white shadow rounded-lg p-4 max-h-96 overflow-y-auto">
-        <table class="min-w-full text-sm text-gray-700">
-            <thead class="border-b">
-                <tr>
-                    <th class="py-2 px-4">ID</th>
-                    <th class="py-2 px-4">Nombre</th>
-                    <th class="py-2 px-4">Correo</th>
-                    <th class="py-2 px-4">Contraseña</th>
-                    <th class="py-2 px-4">Género</th>
-                    <th class="py-2 px-4">Rol</th>
-                    <th class="py-2 px-4">Biografía</th>
-                    <th class="py-2 px-4">Foto de Perfil</th>
-                    <th class="py-2 px-4">Fecha de Creación</th>
-                    <th class="py-2 px-4" colspan="2">Acciones</th>
-                </tr>
-            </thead>
-        </table>
-    </div>
-    <div class="bg-white shadow rounded-lg p-4 max-h-96 overflow-y-auto">
-        <table class="min-w-full text-sm text-gray-700">
-            <tbody>
-                <?php foreach ($resultado_usuario as $usuario): ?>
-                    <tr class="border-b">
-                        <td class="py-2 px-4"><?= $usuario['id'] ?></td>
-                        <td class="py-2 px-4"><?= $usuario['nombre_usuario'] ?></td>
-                        <td class="py-2 px-4"><?= $usuario['correo'] ?></td>
-                        <td class="py-2 px-4"><?= $usuario['contrasena'] ?></td>
-                        <td class="py-2 px-4"><?= $usuario['genero'] ?></td>
-                        <td class="py-2 px-4"><?= $usuario['rol'] ?></td>
-                        <td class="py-2 px-4"><?= $usuario['biografia'] ?></td>
-                        <td class="py-2 px-4">
-                            <img src="../assets/img/uploads/<?= $usuario['foto_perfil'] ?>" alt="Foto de Perfil" class="w-12 h-12 rounded-full">
-                        </td>
-                        <td class="py-2 px-4"><?= $usuario['fecha_creacion'] ?></td>
-                        <td class="py-2 px-4">
-                            <a href="usuario/update/?id_usuario=<?= $usuario['id'] ?>&url=admin" class="bg-pink-500 text-white px-3 py-1 rounded hover:bg-pink-600">Actualizar</a>
-                            <a href="usuario/Drop/index.php?id_usuario=<?= $usuario['id'] ?>&url=admin" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Eliminar</a>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-    </div>
-</section> -->

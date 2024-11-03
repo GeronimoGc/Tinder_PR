@@ -5,21 +5,24 @@ include('../assets/config/op_conectar.php');
 $id_usuario = $_POST['id_usuario'];
 $url = $_POST['url'];
 
-    if ($url == 'admin') {
-        $consulta_Admin = $pdo->prepare("SELECT * FROM usuarios WHERE id = ?");
-        $consulta_Admin->execute([$id_usuario]);
-        $resultado_admin = $consulta_Admin->fetch(PDO::FETCH_ASSOC);
-    } else {
+if ($url == 'admin') {
+    $consulta_Admin = $pdo->prepare("SELECT * FROM usuarios WHERE id = ?");
+    $consulta_Admin->execute([$id_usuario]);
+    $resultado_admin = $consulta_Admin->fetch(PDO::FETCH_ASSOC);
+} elseif ($url == "usuario") { {
         echo "
-        <form id='redirectForm' action='../../home/' method='POST'>
-            <input type='hidden' name='id_usuario' value='$id_usuario'>
-            <input type='hidden' name='url' value='$url'>
-        </form>
-        <script>
-            document.getElementById('redirectForm').submit();
-        </script>";
+            <form id='redirectForm' action='../home/' method='POST'>
+                <input type='hidden' name='id_usuario' value='$id_usuario'>
+                <input type='hidden' name='url' value='$url'>
+            </form>
+            <script>
+                document.getElementById('redirectForm').submit();
+            </script>";
         exit();
     }
+} else { 
+    header("Location: ../");
+}
 
 try {
     $listar_usuario = $pdo->prepare("SELECT * FROM usuarios");
@@ -162,7 +165,7 @@ try {
                                 <td class="py-2 px-2"><?= $usuario['fecha_creacion'] ?></td>
                                 <td class="py-2 px-2">
                                     <form id='redirectForm' action='usuario/Update/' method='POST'>
-                                    <input type="hidden" name='id_admin' value='<?= $id_usuario ?>'>
+                                        <input type="hidden" name='id_admin' value='<?= $id_usuario ?>'>
                                         <input type='hidden' name='id_usuario' value='<?= $usuario['id'] ?>'>
                                         <input type='hidden' name='url' value='<?= $url ?>'>
                                         <button type="submit" class="bg-pink-500 text-white px-2 py-1 rounded hover:bg-pink-600 text-xs mb-11">Actualizar</button>

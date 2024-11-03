@@ -162,6 +162,7 @@ try {
                                 <td class="py-2 px-2"><?= $usuario['fecha_creacion'] ?></td>
                                 <td class="py-2 px-2">
                                     <form id='redirectForm' action='usuario/Update/' method='POST'>
+                                    <input type="hidden" name='id_admin' value='<?= $id_usuario ?>'>
                                         <input type='hidden' name='id_usuario' value='<?= $usuario['id'] ?>'>
                                         <input type='hidden' name='url' value='<?= $url ?>'>
                                         <button type="submit" class="bg-pink-500 text-white px-2 py-1 rounded hover:bg-pink-600 text-xs mb-11">Actualizar</button>

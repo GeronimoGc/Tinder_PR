@@ -52,18 +52,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $consulta = $pdo->prepare("UPDATE usuarios SET nombre_usuario = ?, correo = ?, contrasena = ?, genero = ?, rol = ?, biografia = ?, foto_perfil = ? WHERE id = ?");
         $consulta->execute([$nombre_usuario, $correo_usuario, $contrasena_usuario, $genero_usuario, $rol_usuario, $biografia_usuario, $img, $id_usuario]);
 
-        // Redirigir después de la actualización
+
         if ($url == 'admin') {
             echo "
-                <form id='redirectForm' action='../../' method='POST' style='display: none;'>
-                    <input type='hidden' name='id_usuario' value='$id_admin'>
-                    <input type='hidden' name='url' value='$url'>
-                </form>
-                <script>
-                    document.getElementById('redirectForm').submit();
-                </script>";
+            <form id='redirectForm' action='../../' method='POST' style='display: none;'>
+                <input type='hidden' name='id_usuario' value='" . $id_admin .  "'>
+                <input type='hidden' name='url' value='" . $url . "'>
+            </form>
+            <script>
+                document.getElementById('redirectForm').submit();
+            </script>";
             exit();
-        } else {
+        } elseif ($url == "usuario") {
             echo "
                 <form id='redirectForm' action='../../' method='POST' style='display: none;'>
                     <input type='hidden' name='id_usuario' value='" . htmlspecialchars($id_usuario) . "'>

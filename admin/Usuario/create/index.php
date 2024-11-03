@@ -1,4 +1,7 @@
-<?php $url = $_GET['url']; ?>
+<?php 
+$url = $_POST['url'];
+$id_admin = $_POST['id_admin']; 
+?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -16,6 +19,7 @@
 
         <form action="op_create.php" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="url" value="<?= $url; ?>">
+            <input type="hidden" name="id_admin" value="<?= $id_admin; ?>">
             <!-- Nombre -->
             <label for="nombre" class="block text-sm font-semibold text-gray-700">Nombre</label>
             <input type="text" name="nombre" id="nombre" class="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500" required>

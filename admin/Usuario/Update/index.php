@@ -1,17 +1,18 @@
 <?php
 include("../../../assets/config/op_conectar.php"); // Incluye la conexión
 
-// Verificar si se ha pasado un ID de usuario para actualizar
-if (isset($_GET['id_usuario'])) {
-    $id_usuario = $_GET['id_usuario'];
-    $url = $_GET['url'];
+$id_admin = $_POST['id_admin'];
+$url = $_POST['url'];
 
-    // Obtener los datos del usuario de la base de datos
+
+if (isset($_POST['id_usuario'])) {
+
+    $id_usuario = $_POST['id_usuario'];
+
     $consulta = $pdo->prepare("SELECT * FROM usuarios WHERE id = ?");
     $consulta->execute([$id_usuario]);
     $usuario = $consulta->fetch(PDO::FETCH_ASSOC);
 
-    // Si no se encuentra el usuario, redirigir a otra página (opcional)
     if (!$usuario) {
         header("Location: ../");
         exit();
@@ -35,50 +36,50 @@ if (isset($_GET['id_usuario'])) {
         <h2 class="text-3xl font-bold text-center text-pink-600 mb-6">Actualizar Perfil</h2>
 
         <form action="op_update.php" method="POST" enctype="multipart/form-data">
-            <input type="hidden" name="url" value="<?= $url; ?>">
+        <input type="hidden" name="url" value="<?= $url; ?>">
+        <input type="hidden" name="id_admin" value="<?= $id_admin; ?>">
             <input type="hidden" name="id_usuario" value="<?= $id_usuario; ?>">
 
-            <!-- Nombre -->
+
             <label for="nombre" class="block text-sm font-semibold text-gray-700">Nombre</label>
             <input type="text" name="nombre_usuario" id="nombre" value="<?= htmlspecialchars($usuario['nombre_usuario']); ?>" class="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500" required>
 
-            <!-- Correo Electrónico -->
+
             <label for="email" class="block text-sm font-semibold text-gray-700">Correo Electrónico</label>
             <input type="email" name="email" id="email" value="<?= htmlspecialchars($usuario['correo']); ?>" class="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500" required>
 
-            <!-- Contraseña -->
-            <label for="password" class="block text-sm font-semibold text-gray-700">Contraseña (dejar en blanco para no cambiar)</label>
-            <input type="password" name="password" id="password" class="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500">
+
+            <label for="password" class="block text-sm font-semibold text-gray-700">Contraseña (dejar como esta para no cambiar)</label>
+            <input type="password" name="password" id="password" class="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500" value="<?= htmlspecialchars($usuario['contrasena']); ?>">
+
 
             <label for="genero" class="block text-sm font-semibold text-gray-700">Género</label>
             <select name="genero" id="genero" class="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500" required>
-                <?php if ($usuario['genero'] == 'hombre'): ?>
-                    <option value="1" selected>Masculino (Actual)</option>
-                <?php elseif ($usuario['genero'] == 'mujer'): ?>
-                    <option value="2" selected>Femenino (Actual)</option>
-                <?php elseif ($usuario['genero'] == 'otro'): ?>
-                    <option value="3" selected>Otro (Actual)</option>
-                <?php endif; ?>
-                <option value="1" <?= $usuario['genero'] == 'hombre' ? 'disabled type="hidden' : ''; ?>>Masculino</option>
-                <option value="2" <?= $usuario['genero'] == 'mujer' ? 'disabled type="hidden' : ''; ?>>Femenino</option>
-                <option value="3" <?= $usuario['genero'] == 'otro' ? 'disabled type="hidden"' : ''; ?>>Otro</option>
+                <option value="hombre" <?= $usuario['genero'] == 'hombre' ? 'selected' : ''; ?>>Masculino</option>
+                <option value="mujer" <?= $usuario['genero'] == 'mujer' ? 'selected' : ''; ?>>Femenino</option>
+                <option value="otro" <?= $usuario['genero'] == 'otro' ? 'selected' : ''; ?>>Otro</option>
             </select>
-            <!-- Biografía -->
+
+
+            <label for="rol" class="block text-sm font-semibold text-gray-700">Rol</label>
+            <select name="rol" id="rol" class="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500" required>
+                <option value="admin" <?= $usuario['rol'] == 'admin' ? 'selected' : ''; ?>>Admin</option>
+                <option value="usuario" <?= $usuario['rol'] == 'usuario' ? 'selected' : ''; ?>>Usuario</option>
+                <option value="otro" <?= $usuario['rol'] == 'otro' ? 'selected' : ''; ?>>Otro</option>
+            </select>
+
+
             <label for="biografia" class="block text-sm font-semibold text-gray-700">Biografía</label>
             <textarea name="biografia" id="biografia" rows="3" class="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500"><?= htmlspecialchars($usuario['biografia']); ?></textarea>
 
-            <!-- Foto de Perfil -->
+
             <label for="foto_perfil_usuario" class="block text-sm font-semibold text-gray-700">Foto de Perfil</label>
-            <?php if (!empty($usuario['foto_perfil'])): ?>
-                <!-- Mostrar la imagen de perfil actual -->
-                <img src="../../../assets/img/uploads/<?= htmlspecialchars($usuario['foto_perfil']); ?>" alt="Foto de perfil" class="w-24 h-24 mb-4 rounded-full">
-            <?php endif; ?>
+            <img src="../../../assets/img/uploads/<?= htmlspecialchars($usuario['foto_perfil']); ?>" alt="Foto de perfil" class="w-24 h-24 mb-4 rounded-full">
             <input type="file" name="foto_perfil_usuario" id="foto_perfil_usuario" class="w-full px-4 py-2 mb-6 text-gray-700 border rounded-lg cursor-pointer focus:outline-none focus:border-pink-500">
 
-            <!-- Botón de Actualizar -->
+
             <button type="submit" class="w-full py-2 text-white bg-pink-600 rounded-lg hover:bg-pink-700">Actualizar Perfil</button>
         </form>
     </div>
 </body>
-
 </html>

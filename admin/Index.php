@@ -1,19 +1,17 @@
 <?php
 include('../assets/config/op_conectar.php');
-include('../assets/config/op_validar.php');
+// include('../assets/config/op_validar.php');
 
 $id_usuario = $_POST['id_usuario'];
 $url = $_POST['url'];
-
-if (isset($id_usuario)) {
 
     if ($url == 'admin') {
         $consulta_Admin = $pdo->prepare("SELECT * FROM usuarios WHERE id = ?");
         $consulta_Admin->execute([$id_usuario]);
         $resultado_admin = $consulta_Admin->fetch(PDO::FETCH_ASSOC);
-    } else if ($url == 'usuario') {
+    } else {
         echo "
-        <form id='redirectForm' action='../../home' method='POST'>
+        <form id='redirectForm' action='../../home/' method='POST'>
             <input type='hidden' name='id_usuario' value='$id_usuario'>
             <input type='hidden' name='url' value='$url'>
         </form>
@@ -22,7 +20,6 @@ if (isset($id_usuario)) {
         </script>";
         exit();
     }
-}
 
 try {
     $listar_usuario = $pdo->prepare("SELECT * FROM usuarios");
@@ -89,12 +86,16 @@ try {
 
         <div class="flex items-center space-x-20">
             <div class="flex items-center space-x-4">
-                <a href="#" class="text-gray-600 hover:text-red-500">Inicio</a>
-                <a href="#" class="text-gray-600 hover:text-red-500">Perfil2</a>
+                <a href="../home/" class="text-gray-600 hover:text-red-500">Home</a>
                 <a href="../login/" class="text-gray-600 hover:text-red-500">Cerrar Sesión</a>
             </div>
             <div class="flex items-center space-x-4">
-                <p><?= $resultado_admin['nombre_usuario'] ?></p>
+
+                <?php if (isset($resultado_admin['nombre_usuario']) && !empty($resultado_admin['nombre_usuario'])) : ?>
+                    <p><?= $resultado_admin['nombre_usuario']  ?></p>
+                <?php else : ?>
+                    <p>Usuario Admin</p>
+                <?php endif; ?>
 
                 <?php if (isset($resultado_admin['foto_perfil']) && !empty($resultado_admin['foto_perfil'])) : ?>
                     <img src='../assets/img/uploads/<?= $resultado_admin['foto_perfil'] ?>' alt="Imagen de perfil" class="h-12 w-12 rounded-full object-cover" />
@@ -123,7 +124,11 @@ try {
         <section id="usuarios" class="">
             <h2 class="text-2xl font-bold mb-4 text-gray-700">Administrar Usuarios</h2>
             <div class="p-4 h-auto rounded-lg">
-                <a href="usuario/create/" class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600">Crear Usuario</a>
+                <form id='redirectForm' action='usuario/create/' method='POST'>
+                    <input type="hidden" name='id_admin' value='<?= $id_usuario ?>'>
+                    <input type='hidden' name='url' value='<?= $url ?>'>
+                    <button type="submit" class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600">Crear Usuario</button>
+                </form>
             </div>
             <div class="bg-white shadow rounded-lg p-4 max-h-96 overflow-y-auto overflow-x-auto">
                 <table class="min-w-full text-xs text-gray-700">
@@ -156,10 +161,19 @@ try {
                                 </td>
                                 <td class="py-2 px-2"><?= $usuario['fecha_creacion'] ?></td>
                                 <td class="py-2 px-2">
-                                    <a href="usuario/update/?id_usuario=<?= $usuario['id'] ?>&url=admin" class="bg-pink-500 text-white px-2 py-1 rounded hover:bg-pink-600 text-xs mb-11">Actualizar</a>
+                                    <form id='redirectForm' action='usuario/Update/' method='POST'>
+                                        <input type='hidden' name='id_usuario' value='<?= $usuario['id'] ?>'>
+                                        <input type='hidden' name='url' value='<?= $url ?>'>
+                                        <button type="submit" class="bg-pink-500 text-white px-2 py-1 rounded hover:bg-pink-600 text-xs mb-11">Actualizar</button>
+                                    </form>
                                 </td>
                                 <td class="py-2 px-2">
-                                    <a href="usuario/drop/?id_usuario=<?= $usuario['id'] ?>&url=admin" class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 text-xs mb-11">Eliminar</a>
+                                    <form id='redirectForm' action='usuario/drop/' method='POST'>
+                                        <input type="hidden" name='id_admin' value='<?= $id_usuario ?>'>
+                                        <input type='hidden' name='id_usuario' value='<?= $usuario['id'] ?>'>
+                                        <input type='hidden' name='url' value='<?= $url ?>'>
+                                        <button type="submit" class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 text-xs mb-11">Eliminar</button>
+                                    </form>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

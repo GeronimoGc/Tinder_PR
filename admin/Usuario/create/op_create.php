@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $directorio_imagenes = "../../../assets/img/uploads/";
     if (!is_dir($directorio_imagenes)) {
-        mkdir($directorio_imagenes, 0777, true); 
+        mkdir($directorio_imagenes, 0777, true);
     }
 
     $nombre_archivo = basename($_FILES['foto_perfil_usuario']['name']);
@@ -49,6 +49,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <script>
                     document.getElementById('redirectForm').submit();
                 </script>";
+                exit();
+            } else {
+                header("Location: ../../../");
                 exit();
             }
         } else {

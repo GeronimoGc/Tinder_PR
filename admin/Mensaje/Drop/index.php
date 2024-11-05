@@ -1,7 +1,7 @@
 <?php
 include('../../../assets/config/op_conectar.php'); // Incluye el archivo de conexión
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_usuario'])) {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_mensaje'])) {
     $id_admin = $_POST['id_admin'];
     $id_usuario = $_POST['id_usuario'];
     $url = $_POST["url"];

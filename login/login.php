@@ -8,17 +8,13 @@
     <title>Tinder Login</title>
     <link rel="icon" href="https://cdn1.iconfinder.com/data/icons/social-media-circle-6/1024/tinder-circle-512.png" type="image/x-icon">
     <?php include("../assets/config/HeadTailwind.php"); ?>
-    <style>
-        body {
-            background-image: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)), url(https://tinder.com/static/build/590275fec8cbbb0de80caa66c8450906.webp);
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-        } 
-    </style>
 </head>
 
 <body class="flex items-center justify-center min-h-screen bg-gray-100">
+    <div class="background-container">
+        <link rel="stylesheet" href="../assets/style/style.css" />
+        <div class="animated-background"></div>
+    </div>
 
     <div class="w-full flex justify-start p- absolute top-0 left-0">
         <a href="index.php" class="py-1 px-4">
@@ -31,7 +27,7 @@
             </svg>
         </a>
     </div>
-    <div class="w-full max-w-md p-8 bg-white bg-opacity-80 rounded-2xl shadow-2xl backdrop-blur-md shadow-lg transform transition duration-500 hover:scale-105">
+    <div class="w-full max-w-md p-4 m-4 bg-white bg-opacity-80 rounded-2xl shadow-2xl backdrop-blur-md shadow-lg transform transition duration-500 hover:scale-105">
         <h2 class="text-3xl font-extrabold text-center mb-6 text-pink-600">Iniciar Sesión</h2>
 
         <form action="op_login.php" method="POST">

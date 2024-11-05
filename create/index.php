@@ -35,7 +35,7 @@ $id_admin = $_POST['id_admin'];
             <!-- Género -->
             <label for="genero" class="block text-sm font-semibold text-gray-700">Género</label>
             <select name="genero" id="genero" class="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500" required>
-                <option value="-1">elige</option>
+                <option value="" disabled selected>elige</option>
                 <option value="1">Masculino</option>
                 <option value="2">Femenino</option>
                 <option value="3">Otro</option>
@@ -43,7 +43,7 @@ $id_admin = $_POST['id_admin'];
 
             <label for="rol" class="block text-sm font-semibold text-gray-700">Género</label>
             <select name="rol" id="rol" class="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500" required>
-                <option value="-1">elige</option>
+                <option value=""disabled selected>elige</option>
                 <option value="admin">Admin</option>
                 <option value="usuario">Usuario</option>
                 <option value="visita">Visita</option>

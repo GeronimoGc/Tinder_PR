@@ -7,17 +7,13 @@
     <title>Registro - Tinder</title>
     <link rel="icon" href="https://cdn1.iconfinder.com/data/icons/social-media-circle-6/1024/tinder-circle-512.png" type="image/x-icon">
     <?php include("../assets/config/HeadTailwind.php"); ?>
-    <style>
-        body {
-            background-image: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)), url(https://tinder.com/static/build/590275fec8cbbb0de80caa66c8450906.webp);
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
-    </style>
 </head>
 
 <body class="flex items-center justify-center min-h-screen bg-pink-100 bg-opacity-50 relative">
+    <div class="background-container">
+        <link rel="stylesheet" href="../assets/style/style.css" />
+        <div class="animated-background"></div>
+    </div>
     <div class="w-full flex justify-start p-4 absolute top-0 left-0">
         <a href="../login" class="py-2 px-4">
             <img src="https://logo-marque.com/wp-content/uploads/2020/09/Tinder-Logo.png" alt="Tinder Logo" class="h-10">
@@ -29,7 +25,7 @@
             </svg>
         </a>
     </div>
-    <div class="w-full max-w-md p-8 bg-white bg-opacity-80 rounded-2xl shadow-2xl backdrop-blur-md transform transition duration-500 hover:scale-105">
+    <div class="w-full max-w-md p-4 m-4 bg-white bg-opacity-80 rounded-2xl shadow-2xl backdrop-blur-md transform transition duration-500 hover:scale-105">
         <h2 class="text-3xl font-extrabold text-center text-pink-600 mb-6">Crea tu cuenta en Tinder</h2>
 
         <form action="../admin/Usuario/create/op_create.php" method="POST" enctype="multipart/form-data">
@@ -63,7 +59,7 @@
 
             <!-- Foto de Perfil -->
             <label for="foto_perfil_usuario" class="block text-sm font-semibold text-gray-700">Foto de Perfil</label>
-            <input type="file" name="foto_perfil_usuario" id="foto_perfil_usuario" class="w-full px-4 py-2 mb-6 text-gray-700 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-pink-500">
+            <input type="file" name="foto_perfil_usuario" id="foto_perfil_usuario" class="w-full px-4 py-2 mb-6 text-gray-700 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-pink-500" required>
 
             <!-- Botón de Registro -->
             <button type="submit" class="w-full py-3 mt-2 text-white font-semibold bg-pink-600 rounded-lg shadow-lg hover:bg-pink-700 transition duration-300">

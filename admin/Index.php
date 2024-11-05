@@ -322,63 +322,61 @@ JOIN usuarios user_receptor ON mensajes.id_receptor = user_receptor.id;
     </main>
 
 
-
-
-
-
     <!-- Modal -->
     <div id="modal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden z-50 ">
-        <div class="w-full max-w-md p-6 bg-white rounded-lg shadow-lg h-screen overscroll-contain overflow-auto ">
-            <h2 class="text-3xl font-bold text-center text-pink-600 mb-6">Crea tu cuenta en Tinder</h2>
+        <div>
+            <div class="w-full max-w-md p-6 bg-white rounded-lg shadow-lg h-screen overscroll-contain overflow-auto ">
+                <h2 class="text-3xl font-bold text-center text-pink-600 mb-6">Crea tu cuenta en Tinder</h2>
 
-            <form action="op_create.php" method="POST" enctype="multipart/form-data">
-                <div class="flex"> 
-                    <input type="hidden" name="url" value="<?= $url; ?>">
-                    <input type="hidden" name="id_admin" value="<?= $id_admin; ?>">
-                    <!-- Nombre -->
-                    <label for="nombre" class="block text-sm font-semibold text-gray-700">Nombre</label>
-                    <input type="text" name="nombre" id="nombre" class="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500" required>
-                </div>
-                <!-- Correo Electrónico -->
-                <label for="email" class="block text-sm font-semibold text-gray-700">Correo Electrónico</label>
-                <input type="email" name="email" id="email" class="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500" required>
+                <form action="op_create.php" method="POST" enctype="multipart/form-data">
+                    <div class="flex">
+                        <input type="hidden" name="url" value="<?= $url; ?>">
+                        <input type="hidden" name="id_admin" value="<?= $id_admin; ?>">
+                        <!-- Nombre -->
+                        <label for="nombre" class="block text-sm font-semibold text-gray-700">Nombre</label>
+                        <input type="text" name="nombre" id="nombre" class="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500" required>
+                    </div>
+                    <!-- Correo Electrónico -->
+                    <label for="email" class="block text-sm font-semibold text-gray-700">Correo Electrónico</label>
+                    <input type="email" name="email" id="email" class="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500" required>
 
-                <!-- Contraseña -->
-                <label for="password" class="block text-sm font-semibold text-gray-700">Contraseña</label>
-                <input type="password" name="password" id="password" class="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500" required>
+                    <!-- Contraseña -->
+                    <label for="password" class="block text-sm font-semibold text-gray-700">Contraseña</label>
+                    <input type="password" name="password" id="password" class="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500" required>
 
-                <!-- Género -->
-                <label for="genero" class="block text-sm font-semibold text-gray-700">Género</label>
-                <select name="genero" id="genero" class="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500" required>
-                    <option value="" disabled selected>elige</option>
-                    <option value="1">Masculino</option>
-                    <option value="2">Femenino</option>
-                    <option value="3">Otro</option>
-                </select>
+                    <!-- Género -->
+                    <label for="genero" class="block text-sm font-semibold text-gray-700">Género</label>
+                    <select name="genero" id="genero" class="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500" required>
+                        <option value="" disabled selected>elige</option>
+                        <option value="1">Masculino</option>
+                        <option value="2">Femenino</option>
+                        <option value="3">Otro</option>
+                    </select>
 
-                <label for="rol" class="block text-sm font-semibold text-gray-700">Rol</label>
-                <select name="rol" id="rol" class="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500" required>
-                    <option value="" disabled selected>elige</option>
-                    <option value="admin">Admin</option>
-                    <option value="usuario">Usuario</option>
-                    <!-- <option value="visita">Visita</option>
+                    <label for="rol" class="block text-sm font-semibold text-gray-700">Rol</label>
+                    <select name="rol" id="rol" class="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500" required>
+                        <option value="" disabled selected>elige</option>
+                        <option value="admin">Admin</option>
+                        <option value="usuario">Usuario</option>
+                        <!-- <option value="visita">Visita</option>
                     <option value="otro">Otro</option> -->
-                </select>
+                    </select>
 
-                <!-- Biografía -->
-                <label for="biografia" class="block text-sm font-semibold text-gray-700">Biografía</label>
-                <textarea name="biografia" id="biografia" rows="3" class="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500" placeholder="Cuenta un poco sobre ti..."></textarea>
+                    <!-- Biografía -->
+                    <label for="biografia" class="block text-sm font-semibold text-gray-700">Biografía</label>
+                    <textarea name="biografia" id="biografia" rows="3" class="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500" placeholder="Cuenta un poco sobre ti..."></textarea>
 
-                <!-- Foto de Perfil -->
-                <label for="foto_perfil_usuario" class="block text-sm font-semibold text-gray-700">Foto de Perfil</label>
-                <input type="file" name="foto_perfil_usuario" id="foto_perfil_usuario" class="w-full px-4 py-2 mb-6 text-gray-700 border rounded-lg cursor-pointer focus:outline-none focus:border-pink-500" required>
+                    <!-- Foto de Perfil -->
+                    <label for="foto_perfil_usuario" class="block text-sm font-semibold text-gray-700">Foto de Perfil</label>
+                    <input type="file" name="foto_perfil_usuario" id="foto_perfil_usuario" class="w-full px-4 py-2 mb-6 text-gray-700 border rounded-lg cursor-pointer focus:outline-none focus:border-pink-500" required>
 
-                <!-- Botón de Registro -->
-                <button type="submit" class="w-full py-2 text-white bg-pink-600 rounded-lg hover:bg-pink-700">Registrarse</button>
-            </form>
+                    <!-- Botón de Registro -->
+                    <button type="submit" class="w-full py-2 text-white bg-pink-600 rounded-lg hover:bg-pink-700">Registrarse</button>
+                </form>
 
-            <!-- Botón para cerrar el modal -->
-            <button id="closeModal" class="mt-4 w-full py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300">Cerrar</button>
+                <!-- Botón para cerrar el modal -->
+                <button id="closeModal" class="mt-4 w-full py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300">Cerrar</button>
+            </div>
         </div>
     </div>
 

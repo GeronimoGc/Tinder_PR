@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Redirección según el valor de $url
             $id_usuario = $id_admin ?: null;
             echo "
-            <form id='redirectForm' action='../../' method='POST' style='display: none;'>
+            <form id='redirectForm' action='../../#mensajes' method='POST' style='display: none;'>
                 <input type='hidden' name='id_usuario' value='" . htmlspecialchars($id_usuario, ENT_QUOTES, 'UTF-8') . "'>
                 <input type='hidden' name='url' value='" . htmlspecialchars($url, ENT_QUOTES, 'UTF-8') . "'>
             </form>

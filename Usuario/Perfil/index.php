@@ -23,7 +23,7 @@ $usuario_actual = $consulta_usuario->fetch(PDO::FETCH_ASSOC);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfil de Usuario</title>
-    <?php include("../assets/config/HeadTailwind.php"); ?>
+    <?php include("../../assets/config/HeadTailwind.php"); ?>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 
@@ -32,18 +32,15 @@ $usuario_actual = $consulta_usuario->fetch(PDO::FETCH_ASSOC);
     <header class="bg-pink-600 text-white p-4 flex items-center justify-between">
         <img src="https://logo-marque.com/wp-content/uploads/2020/09/Tinder-Logo.png" alt="Tinder Logo" class="h-10">
         <h1 class="text-2xl font-bold">Perfil de Usuario</h1>
-        <a href="../" class="text-white text-sm underline">Volver</a>
-
-
-        <a href="../" class="absolute top-4 right-4 bg-pink-500 p-2 rounded-full shadow-md hover:bg-pink-600 transition duration-300">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path>
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 22V12h6v10"></path>
-            </svg>
+        <a>"."</a>
+        <a href="../../home" class="absolute top-4 right-4 bg-pink-500 p-2 rounded-full shadow-md hover:bg-pink-600 transition duration-300">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="w-5 h-5 fill-white">
+                 <!-- Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free -->
+            <path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/>
+        </svg>
         </a>
 
-
-    </header>
+</header>
 
     <!-- Contenedor de perfil -->
     <div class="max-w-4xl mx-auto my-8 bg-white shadow-lg rounded-lg p-8">

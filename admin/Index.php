@@ -42,7 +42,9 @@ JOIN usuarios user_receptor ON mensajes.id_receptor = user_receptor.id;
     $listar_foto->execute();
     $resultado_foto = $listar_foto->fetchAll(PDO::FETCH_ASSOC);
 
-    $listar_coincidencia = $pdo->prepare("SELECT * FROM coincidencias");
+    $listar_coincidencia = $pdo->prepare("SELECT coincidencias.*, user_.nombre_usuario as nombre_usuario, user_objetive.nombre_usuario as nombre_usuario_objetivo  FROM coincidencias 
+    JOIN usuarios user_ ON coincidencias.id_usuario = user_.id
+    JOIN usuarios user_objetive ON coincidencias.id_usuario_objetivo = user_objetive.id");
     $listar_coincidencia->execute();
     $resultado_coincidencia = $listar_coincidencia->fetchAll(PDO::FETCH_ASSOC);
 
@@ -63,7 +65,6 @@ JOIN usuarios user_receptor ON mensajes.id_receptor = user_receptor.id;
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Panel de Administración</title>
-    <link rel="icon" href="https://cdn1.iconfinder.com/data/icons/social-media-circle-6/1024/tinder-circle-512.png" type="image/x-icon">
     <?php include("../assets/config/HeadTailwind.php"); ?>
     <script>
         // Función para mostrar la sección según el hash de la URL
@@ -91,7 +92,7 @@ JOIN usuarios user_receptor ON mensajes.id_receptor = user_receptor.id;
 
 <body class="bg-gray-100 h-screen overflow-y-hidden">
 
-    <header class="w-full bg-white border-b border-gray-200 fixed top-0 left-0 z-10 flex justify-between items-center h-20 px-6 shadow-sm">
+    <header class="w-full bg-white border-b border-gray-200 fixed top-0 left-0 z-10 flex justify-between items-center h-16 px-6 shadow-sm">
         <div class="flex items-center space-x-4">
             <img src="https://logo-marque.com/wp-content/uploads/2020/09/Tinder-Logo.png" alt="Logo" class="h-8">
             <span class="font-semibold text-lg text-gray-700">Panel de Administración</span>
@@ -132,13 +133,17 @@ JOIN usuarios user_receptor ON mensajes.id_receptor = user_receptor.id;
 
     </aside>
 
-    <main class="flex-grow p-6 ml-64 mt-16">
+    <main class="flex-grow p-6 ml-64 mt-16 absolute">
 
         <section id="usuarios" class="">
-            <h2 class="text-2xl font-bold mb-4 text-gray-700">Administrar Usuarios</h2>
-            <div class="p-4 h-auto rounded-lg">
-                <button id="openModalcrearcuenta" class="px-4 py-2 text-white bg-pink-600 rounded-lg hover:bg-pink-700">Crear Cuenta</button>
+
+            <div class="flex">
+                <h2 class="text-2xl font-bold mb-4 text-gray-700 p-4">Administrar Usuarios</h2>
+                <div class="p-4 h-auto rounded-lg">
+                    <button id="openModalcrearcuenta" class="px-2 py-2 text-white bg-pink-600 rounded-lg hover:bg-pink-700">Crear Cuenta</button>
+                </div>
             </div>
+
             <div class="bg-white shadow rounded-lg p-4 max-h-96 overflow-y-auto overflow-x-auto">
                 <table class="min-w-full text-xs text-gray-700">
                     <thead class="border-b bg-white">
@@ -170,13 +175,6 @@ JOIN usuarios user_receptor ON mensajes.id_receptor = user_receptor.id;
                                 </td>
                                 <td class="py-2 px-2"><?= $usuario['fecha_creacion'] ?></td>
                                 <td class="py-2 px-2">
-                                    <!-- <form id='redirectForm' action='usuario/Update/' method='POST'>
-                                        <input type="hidden" name='id_admin' value='<?= $id_usuario ?>'>
-                                        <input type='hidden' name='id_usuario' value='<?= $usuario['id'] ?>'>
-                                        <input type='hidden' name='url' value='<?= $url ?>'>
-                                        <button type="submit" class="bg-pink-500 text-white px-2 py-1 rounded hover:bg-pink-600 text-xs mb-11">Actualizar</button>
-                                    </form> -->
-                                    <!-- Botón para abrir el modal de actualización de usuario -->
                                     <button class="openUpdateModalButton bg-pink-500 text-white px-2 py-1 rounded hover:bg-red-600 text-xs mb-11">
                                         Actualizar
                                     </button>
@@ -198,10 +196,13 @@ JOIN usuarios user_receptor ON mensajes.id_receptor = user_receptor.id;
         </section>
 
         <section id="mensajes" class="">
-            <h2 class="text-2xl font-bold mb-4 text-gray-700">Administrar Mensajes</h2>
-            <div class="p-4 h-auto rounded-lg">
-                <button id="openModalcrearmensaje" class="px-4 py-2 text-white bg-pink-600 rounded-lg hover:bg-pink-700">Enviar Mensaje</button>
+            <div class="flex">
+                <h2 class="text-2xl font-bold mb-4 text-gray-700 p-4">Administrar Mensajes</h2>
+                <div class="p-4 h-auto rounded-lg  flex">
+                    <button id="openModalcrearmensaje" class="px-2 py-2 text-white bg-pink-600 rounded-lg hover:bg-pink-700">Enviar Mensaje</button>
+                </div>
             </div>
+
             <div class="bg-white shadow rounded-lg p-4 max-h-96 overflow-y-auto overflow-x-auto">
                 <table class="min-w-full text-xs text-gray-700">
                     <thead class="border-b bg-white">
@@ -256,12 +257,14 @@ JOIN usuarios user_receptor ON mensajes.id_receptor = user_receptor.id;
         </section>
 
         <section id="fotos" class="">
-            <h2 class="text-2xl font-bold mb-4 text-gray-700">Administrar Fotos</h2>
-            <div class="p-4 h-auto rounded-lg">
-                <!-- Botón para abrir el modal -->
-                <button id="openModalSubirFoto" class="w-full py-2 text-white bg-pink-600 rounded-lg hover:bg-pink-700">Subir Foto</button>
 
+            <div class="flex">
+                <h2 class="text-2xl font-bold mb-4 text-gray-700 p-4">Administrar Fotos</h2>
+                <div class="p-4 h-auto rounded-lg flex">
+                    <button id="openModalSubirFoto" class="px-2 py-2 text-white bg-pink-600 rounded-lg hover:bg-pink-700">Subir Foto</button>
+                </div>
             </div>
+
             <div class="bg-white shadow rounded-lg p-4 max-h-96 overflow-y-auto overflow-x-auto">
                 <table class="min-w-full text-xs text-gray-700">
                     <thead class="border-b bg-white">
@@ -281,14 +284,19 @@ JOIN usuarios user_receptor ON mensajes.id_receptor = user_receptor.id;
                                 <td class="px-4 py-2"><?= $foto["id_usuario"] ?> <?= $foto["nombre_usuario"] ?> </td>
                                 <td class="px-4 py-2"><?= $foto["url_foto"] ?></td>
                                 <td class="px-4 py-2">
-                                    <img src="../assets/img/uploads/<?= $foto['url_foto'] ?>" alt="Foto" class="w-16 h-16 rounded-full">
+                                    <img src="../assets/img/uploads/users/fotos/<?= $foto['url_foto'] ?>" alt="Foto" class="w-16 h-16 rounded-full">
                                 </td>
                                 <td class="px-4 py-2"><?= $foto["fecha_subida"] ?></td>
                                 <td class="py-2 px-4">
-                                    <a href="foto/update/?id_foto=<?= $foto['id'] ?>&url=admin" class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600">Actualizar</a>
+                                    <button class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600 openUpdatePhotoModalButton" data-id-foto="<?= $foto['id'] ?>" data-id-usuario="<?= $foto['id_usuario'] ?>" data-nombre-usuario="<?= $foto['nombre_usuario'] ?>" data-url-foto="<?= $foto['url_foto'] ?>">Actualizar</button>
                                 </td>
                                 <td class="py-2 px-4">
-                                    <a href="foto/Drop/?id_foto=<?= $foto['id'] ?>&url=admin" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Eliminar</a>
+                                    <form id='redirectForm' action='foto/drop/' method='POST'>
+                                        <input type="hidden" name='id_admin' value='<?= $id_usuario ?>'>
+                                        <input type='hidden' name='id_mensaje' value='<?= $foto['id'] ?>'>
+                                        <input type='hidden' name='url' value='<?= $url ?>'>
+                                        <button type="submit" class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 text-xs mb-11">Eliminar</button>
+                                    </form>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -298,10 +306,14 @@ JOIN usuarios user_receptor ON mensajes.id_receptor = user_receptor.id;
         </section>
 
         <section id="coincidencias" class="">
-            <h2 class="text-2xl font-bold mb-4 text-gray-700">Administrar Coincidencias</h2>
-            <div class="p-4 h-auto rounded-lg">
-                <a href="coincidencia/create/" class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600">Crear Coincidencias</a>
+
+            <div class="flex">
+                <h2 class="text-2xl font-bold mb-4 text-gray-700 p-4">Administrar Coincidencias</h2>
+                <div class="p-4 h-auto rounded-lg">
+                    <button class="openCreateModalButtonCoincidencia bg-pink-500 text-white px-2 py-2 rounded hover:bg-pink-600px-4 py-2 text-white bg-pink-600 rounded-lg hover:bg-pink-700"> Crear Coincidencia </button>
+                </div>
             </div>
+
             <div class="bg-white shadow rounded-lg p-4 max-h-96 overflow-y-auto overflow-x-auto">
                 <table class="min-w-full text-xs text-gray-700">
                     <thead class="border-b bg-white">
@@ -318,15 +330,23 @@ JOIN usuarios user_receptor ON mensajes.id_receptor = user_receptor.id;
                         <?php foreach ($resultado_coincidencia as $coincidencia): ?>
                             <tr class="border-b">
                                 <td class="px-4 py-2"><?= $coincidencia["id"] ?></td>
-                                <td class="px-4 py-2"><?= $coincidencia["id_usuario"] ?></td>
-                                <td class="px-4 py-2"><?= $coincidencia["id_usuario_objetivo"] ?></td>
+                                <td class="px-4 py-2"><?= $coincidencia["id_usuario"] ?> <?= $coincidencia["nombre_usuario"] ?></td>
+                                <td class="px-4 py-2"><?= $coincidencia["id_usuario_objetivo"] ?> <?= $coincidencia["nombre_usuario_objetivo"] ?></td>
                                 <td class="px-4 py-2"><?= $coincidencia["accion"] ?></td>
                                 <td class="px-4 py-2"><?= $coincidencia["fecha_coincidencia"] ?></td>
                                 <td class="py-2 px-4">
-                                    <a href="coincidencia/update/?id_foto=<?= $coincidencia['id'] ?>&url=admin" class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600">Actualizar</a>
+                                    <button class="openUpdateModalButtonCoincidencia bg-pink-500 text-white px-2 py-1 rounded hover:bg-red-600 text-xs" data-id="<?= $coincidencia['id'] ?>" data-id_usuario="<?= $coincidencia['id_usuario'] ?>" data-id_usuario_objetivo="<?= $coincidencia['id_usuario_objetivo'] ?>" data-accion="<?= $coincidencia['accion'] ?>">
+                                        Actualizar
+                                    </button>
+
                                 </td>
                                 <td class="py-2 px-4">
-                                    <a href="coincidencia/Drop/?id_foto=<?= $coincidencia['id'] ?>&url=admin" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Eliminar</a>
+                                    <form id='redirectForm' action='coincidencia/drop/' method='POST'>
+                                        <input type="hidden" name='id_admin' value='<?= $id_usuario ?>'>
+                                        <input type='hidden' name='id' value='<?= $coincidencia['id'] ?>'>
+                                        <input type='hidden' name='url' value='<?= $url ?>'>
+                                        <button type="submit" class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 text-xs mb-11">Eliminar</button>
+                                    </form>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -338,14 +358,13 @@ JOIN usuarios user_receptor ON mensajes.id_receptor = user_receptor.id;
     </main>
 
 
+    <!-- Modals  -->
+    <div class="">
 
-
-
-    <!-- crear usuario modal -->
-    <div>
-        <div id="modal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden z-50">
-            <div>
-                <div class="w-full max-w-md p-6 bg-white rounded-lg shadow-lg h-screen overscroll-contain overflow-auto">
+        <!-- crear usuario -->
+        <div>
+            <div id="modal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden z-50">
+                <div class="w-full max-w-md p-6 bg-white rounded-lg shadow-lg h-screen overscroll-contain overflow-auto py-20">
                     <h2 class="text-3xl font-bold text-center text-pink-600 mb-6">Crea tu cuenta en Tinder</h2>
 
                     <form action="Usuario/create/op_create.php" method="POST" enctype="multipart/form-data">
@@ -402,45 +421,43 @@ JOIN usuarios user_receptor ON mensajes.id_receptor = user_receptor.id;
                     <button id="closemodalcrearusuario" class="mt-4 w-full py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300">Cerrar</button>
                 </div>
             </div>
+
+
+            <script>
+                // Obtener los elementos del modal y los botones
+                const modal = document.getElementById('modal');
+                const openModalButton = document.getElementById('openModalcrearcuenta');
+                const closeModalButton = document.getElementById('closemodalcrearusuario');
+
+                // Función para abrir el modal
+                openModalButton.addEventListener('click', () => {
+                    modal.classList.remove('hidden'); // Muestra el modal
+                });
+
+                // Función para cerrar el modal
+                closeModalButton.addEventListener('click', () => {
+                    modal.classList.add('hidden'); // Oculta el modal
+                });
+
+                // Cerrar el modal al hacer clic fuera de él
+                window.addEventListener('click', (event) => {
+                    if (event.target === modal) {
+                        modal.classList.add('hidden'); // Oculta el modal
+                    }
+                });
+            </script>
         </div>
 
+        <!-- actualizar usuario -->
+        <div>
 
-        <script>
-            // Obtener los elementos del modal y los botones
-            const modal = document.getElementById('modal');
-            const openModalButton = document.getElementById('openModalcrearcuenta');
-            const closeModalButton = document.getElementById('closemodalcrearusuario');
+            <button class="openUpdateModalButton bg-pink-500 text-white px-2 py-1 rounded hover:bg-red-600 text-xs mb-11">
+                Actualizar
+            </button>
 
-            // Función para abrir el modal
-            openModalButton.addEventListener('click', () => {
-                modal.classList.remove('hidden'); // Muestra el modal
-            });
-
-            // Función para cerrar el modal
-            closeModalButton.addEventListener('click', () => {
-                modal.classList.add('hidden'); // Oculta el modal
-            });
-
-            // Cerrar el modal al hacer clic fuera de él
-            window.addEventListener('click', (event) => {
-                if (event.target === modal) {
-                    modal.classList.add('hidden'); // Oculta el modal
-                }
-            });
-        </script>
-    </div>
-
-    <!-- actualizar usuario modal  -->
-    <div>
-
-        <button class="openUpdateModalButton bg-pink-500 text-white px-2 py-1 rounded hover:bg-red-600 text-xs mb-11">
-            Actualizar
-        </button>
-
-        <!-- Modal de actualización de usuario -->
-        <div id="updateModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden z-50">
-            <div>
-                <div class="w-full max-w-md p-6 bg-white rounded-lg shadow-lg h-screen overscroll-contain overflow-auto">
+            <!-- Modal de actualización de usuario -->
+            <div id="updateModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden z-50">
+                <div class="w-full max-w-md p-6 bg-white rounded-lg shadow-lg h-screen overscroll-contain overflow-auto py-20">
                     <h2 class="text-3xl font-bold text-center text-pink-600 mb-6">Actualizar Perfil</h2>
 
                     <form action="usuario/update/op_update.php" method="POST" enctype="multipart/form-data">
@@ -495,124 +512,120 @@ JOIN usuarios user_receptor ON mensajes.id_receptor = user_receptor.id;
                     <button id="closeUpdateModal" class="mt-4 w-full py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300">Cerrar</button>
                 </div>
             </div>
-        </div>
 
-        <script>
-            // Selección de elementos del DOM
-            const updateModal = document.getElementById('updateModal');
-            const closeUpdateModalButton = document.getElementById('closeUpdateModal');
-            const updateFields = {
-                id_usuario: document.getElementById('update_id_usuario'),
-                nombre: document.getElementById('update_nombre'),
-                email: document.getElementById('update_email'),
-                password: document.getElementById('update_password'),
-                genero: document.getElementById('update_genero'),
-                rol: document.getElementById('update_rol'),
-                biografia: document.getElementById('update_biografia'),
-                foto_perfil: document.getElementById('update_foto_perfil')
-            };
+            <script>
+                // Selección de elementos del DOM
+                const updateModal = document.getElementById('updateModal');
+                const closeUpdateModalButton = document.getElementById('closeUpdateModal');
+                const updateFields = {
+                    id_usuario: document.getElementById('update_id_usuario'),
+                    nombre: document.getElementById('update_nombre'),
+                    email: document.getElementById('update_email'),
+                    password: document.getElementById('update_password'),
+                    genero: document.getElementById('update_genero'),
+                    rol: document.getElementById('update_rol'),
+                    biografia: document.getElementById('update_biografia'),
+                    foto_perfil: document.getElementById('update_foto_perfil')
+                };
 
-            // Función para abrir el modal con datos específicos del usuario
-            document.querySelectorAll('.openUpdateModalButton').forEach(button => {
-                button.addEventListener('click', event => {
-                    const row = event.target.closest('tr');
-                    updateFields.id_usuario.value = row.dataset.id;
-                    updateFields.nombre.value = row.dataset.nombre;
-                    updateFields.email.value = row.dataset.correo;
-                    updateFields.password.value = ''; // Vacío para no cambiar contraseña a menos que el usuario ingrese
-                    updateFields.genero.value = row.dataset.genero;
-                    updateFields.rol.value = row.dataset.rol;
-                    updateFields.biografia.value = row.dataset.biografia;
-                    updateFields.foto_perfil.src = `../assets/img/uploads/${row.dataset.foto}`;
+                // Función para abrir el modal con datos específicos del usuario
+                document.querySelectorAll('.openUpdateModalButton').forEach(button => {
+                    button.addEventListener('click', event => {
+                        const row = event.target.closest('tr');
+                        updateFields.id_usuario.value = row.dataset.id;
+                        updateFields.nombre.value = row.dataset.nombre;
+                        updateFields.email.value = row.dataset.correo;
+                        updateFields.password.value = ''; // Vacío para no cambiar contraseña a menos que el usuario ingrese
+                        updateFields.genero.value = row.dataset.genero;
+                        updateFields.rol.value = row.dataset.rol;
+                        updateFields.biografia.value = row.dataset.biografia;
+                        updateFields.foto_perfil.src = `../assets/img/uploads/${row.dataset.foto}`;
 
-                    updateModal.classList.remove('hidden');
+                        updateModal.classList.remove('hidden');
+                    });
                 });
-            });
 
-            // Cerrar el modal
-            closeUpdateModalButton.addEventListener('click', () => {
-                updateModal.classList.add('hidden');
-            });
-        </script>
-    </div>
-
-
-    <!--Crear mensaje modal-->
-    <div>
-
-        <div id="modalMensaje" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden z-50">
-            <div class="w-full max-w-md p-6 bg-white rounded-lg shadow-lg h-screen overscroll-contain overflow-auto">
-                <h2 class="text-3xl font-bold text-center text-pink-600 mb-6">Enviar Mensaje</h2>
-
-                <form action="mensaje/create/op_create.php" method="POST">
-                    <input type="hidden" name="url" value="<?= $url; ?>">
-                    <input type="hidden" name="id_admin" value="<?= $id_usuario; ?>">
-
-
-                    <label for="id_emisor" class="block text-sm font-semibold text-gray-700">Emisor</label>
-                    <select name="id_emisor" id="id_emisor" class="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500" required>
-                        <option value="" disabled selected>elige</option>
-                        <?php foreach ($resultado_mensaje_2 as $mensaje): ?>
-                            <option value="<?= $mensaje['id'];  ?>"><?= $mensaje['id'];  ?> - <?= $mensaje['nombre_usuario']; ?> - <?= $mensaje['rol']; ?></option>
-                        <?php endforeach; ?>
-                    </select>
-
-
-                    <label for="id_receptor" class="block text-sm font-semibold text-gray-700">ID Receptor</label>
-                    <select name="id_receptor" id="id_receptor" class="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500" required>
-                        <option value="" disabled selected>elige</option>
-                        <?php foreach ($resultado_mensaje_2 as $mensaje): ?>
-                            <option value="<?= $mensaje['id'];  ?>"><?= $mensaje['id'];  ?> - <?= $mensaje['nombre_usuario']; ?> - <?= $mensaje['rol']; ?></option>
-                        <?php endforeach; ?>
-                    </select>
-
-
-
-                    <label for="mensaje" class="block text-sm font-semibold text-gray-700">Mensaje</label>
-                    <textarea name="mensaje" id="mensaje" rows="3" class="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500" placeholder="Escribe tu mensaje aquí..." required></textarea>
-
-                    <button type="submit" class="w-full py-2 text-white bg-pink-600 rounded-lg hover:bg-pink-700">Enviar Mensaje</button>
-                </form>
-
-                <!-- Botón para cerrar el modal -->
-                <button id="closemodalcrearmensaje" class="mt-4 w-full py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300">Cerrar</button>
-            </div>
+                // Cerrar el modal
+                closeUpdateModalButton.addEventListener('click', () => {
+                    updateModal.classList.add('hidden');
+                });
+            </script>
         </div>
 
-
-        <script>
-            // Obtener los elementos del nuevo modal y los botones
-            const modalMensaje = document.getElementById('modalMensaje');
-            const openModalMensajeButton = document.getElementById('openModalcrearmensaje');
-            const closeModalMensajeButton = document.getElementById('closemodalcrearmensaje');
-
-            // Función para abrir el modal
-            openModalMensajeButton.addEventListener('click', () => {
-                modalMensaje.classList.remove('hidden'); // Muestra el modal
-            });
-
-            // Función para cerrar el modal
-            closeModalMensajeButton.addEventListener('click', () => {
-                modalMensaje.classList.add('hidden'); // Oculta el modal
-            });
-
-            // Cerrar el modal al hacer clic fuera de él
-            window.addEventListener('click', (event) => {
-                if (event.target === modalMensaje) {
-                    modalMensaje.classList.add('hidden'); // Oculta el modal
-                }
-            });
-        </script>
-    </div>
-
-    <!-- actualizar mensaje modal -->
-    <div>
+        <!--Crear mensaje -->
         <div>
 
+            <div id="modalMensaje" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden z-50 ">
+                <div class="w-full max-w-md p-6 bg-white rounded-lg shadow-lg h-screen overscroll-contain overflow-auto py-20">
+                    <h2 class="text-3xl font-bold text-center text-pink-600 mb-6">Enviar Mensaje</h2>
+
+                    <form action="mensaje/create/op_create.php" method="POST">
+                        <input type="hidden" name="url" value="<?= $url; ?>">
+                        <input type="hidden" name="id_admin" value="<?= $id_usuario; ?>">
+
+
+                        <label for="id_emisor" class="block text-sm font-semibold text-gray-700">Emisor</label>
+                        <select name="id_emisor" id="id_emisor" class="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500" required>
+                            <option value="" disabled selected>elige</option>
+                            <?php foreach ($resultado_mensaje_2 as $mensaje): ?>
+                                <option value="<?= $mensaje['id'];  ?>"><?= $mensaje['id'];  ?> - <?= $mensaje['nombre_usuario']; ?> - <?= $mensaje['rol']; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+
+
+                        <label for="id_receptor" class="block text-sm font-semibold text-gray-700">ID Receptor</label>
+                        <select name="id_receptor" id="id_receptor" class="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500" required>
+                            <option value="" disabled selected>elige</option>
+                            <?php foreach ($resultado_mensaje_2 as $mensaje): ?>
+                                <option value="<?= $mensaje['id'];  ?>"><?= $mensaje['id'];  ?> - <?= $mensaje['nombre_usuario']; ?> - <?= $mensaje['rol']; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+
+
+
+                        <label for="mensaje" class="block text-sm font-semibold text-gray-700">Mensaje</label>
+                        <textarea name="mensaje" id="mensaje" rows="3" class="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500" placeholder="Escribe tu mensaje aquí..." required></textarea>
+
+                        <button type="submit" class="w-full py-2 text-white bg-pink-600 rounded-lg hover:bg-pink-700">Enviar Mensaje</button>
+                    </form>
+
+                    <!-- Botón para cerrar el modal -->
+                    <button id="closemodalcrearmensaje" class="mt-4 w-full py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300">Cerrar</button>
+                </div>
+            </div>
+
+
+            <script>
+                // Obtener los elementos del nuevo modal y los botones
+                const modalMensaje = document.getElementById('modalMensaje');
+                const openModalMensajeButton = document.getElementById('openModalcrearmensaje');
+                const closeModalMensajeButton = document.getElementById('closemodalcrearmensaje');
+
+                // Función para abrir el modal
+                openModalMensajeButton.addEventListener('click', () => {
+                    modalMensaje.classList.remove('hidden'); // Muestra el modal
+                });
+
+                // Función para cerrar el modal
+                closeModalMensajeButton.addEventListener('click', () => {
+                    modalMensaje.classList.add('hidden'); // Oculta el modal
+                });
+
+                // Cerrar el modal al hacer clic fuera de él
+                window.addEventListener('click', (event) => {
+                    if (event.target === modalMensaje) {
+                        modalMensaje.classList.add('hidden'); // Oculta el modal
+                    }
+                });
+            </script>
+        </div>
+
+        <!-- actualizar mensaje -->
+        <div>
 
             <!-- Modal de actualización de mensaje -->
-            <div id="updateMessageModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden z-50">
-                <div class="w-full max-w-md p-6 bg-white rounded-lg shadow-lg">
+            <div id="updateMessageModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden z-50 ">
+                <div class="w-full max-w-md p-6 bg-white rounded-lg shadow-lg py-20">
                     <h2 class="text-3xl font-bold text-center text-pink-600 mb-6">Actualizar Mensaje</h2>
 
                     <form action="mensaje/update/op_update.php" method="POST">
@@ -646,91 +659,296 @@ JOIN usuarios user_receptor ON mensajes.id_receptor = user_receptor.id;
                     <button id="closeUpdateMessageModal" class="mt-4 w-full py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300">Cerrar</button>
                 </div>
             </div>
-        </div>
 
-        <script>
-            const updateMessageModal = document.getElementById('updateMessageModal');
-            const closeUpdateMessageModalButton = document.getElementById('closeUpdateMessageModal');
-            const messageFields = {
-                id_mensaje: document.getElementById('update_id_mensaje'),
-                id_emisor: document.getElementById('update_id_emisor'),
-                id_receptor: document.getElementById('update_id_receptor'),
-                mensaje: document.getElementById('update_mensaje')
-            };
 
-            document.querySelectorAll('.openUpdateMessageModalButton').forEach(button => {
-                button.addEventListener('click', event => {
-                    const button = event.currentTarget;
+            <script>
+                const updateMessageModal = document.getElementById('updateMessageModal');
+                const closeUpdateMessageModalButton = document.getElementById('closeUpdateMessageModal');
+                const messageFields = {
+                    id_mensaje: document.getElementById('update_id_mensaje'),
+                    id_emisor: document.getElementById('update_id_emisor'),
+                    id_receptor: document.getElementById('update_id_receptor'),
+                    mensaje: document.getElementById('update_mensaje')
+                };
 
-                    // Rellenar los campos del formulario con los datos del botón
-                    messageFields.id_mensaje.value = button.getAttribute('data-id-mensaje');
-                    messageFields.id_emisor.value = button.getAttribute('data-id-emisor');
-                    messageFields.id_receptor.value = button.getAttribute('data-id-receptor');
-                    messageFields.mensaje.value = button.getAttribute('data-mensaje');
+                document.querySelectorAll('.openUpdateMessageModalButton').forEach(button => {
+                    button.addEventListener('click', event => {
+                        const button = event.currentTarget;
 
-                    // Mostrar los nombres del emisor y receptor en las opciones seleccionadas
-                    document.getElementById('emisor_option').innerText = button.getAttribute('data-nombre-emisor');
-                    document.getElementById('receptor_option').innerText = button.getAttribute('data-nombre-receptor');
+                        // Rellenar los campos del formulario con los datos del botón
+                        messageFields.id_mensaje.value = button.getAttribute('data-id-mensaje');
+                        messageFields.id_emisor.value = button.getAttribute('data-id-emisor');
+                        messageFields.id_receptor.value = button.getAttribute('data-id-receptor');
+                        messageFields.mensaje.value = button.getAttribute('data-mensaje');
 
-                    // Mostrar el modal
-                    updateMessageModal.classList.remove('hidden');
+                        // Mostrar los nombres del emisor y receptor en las opciones seleccionadas
+                        document.getElementById('emisor_option').innerText = button.getAttribute('data-nombre-emisor');
+                        document.getElementById('receptor_option').innerText = button.getAttribute('data-nombre-receptor');
+
+                        // Mostrar el modal
+                        updateMessageModal.classList.remove('hidden');
+                    });
                 });
-            });
 
-            closeUpdateMessageModalButton.addEventListener('click', () => {
-                updateMessageModal.classList.add('hidden');
-            });
-        </script>
-    </div>
+                closeUpdateMessageModalButton.addEventListener('click', () => {
+                    updateMessageModal.classList.add('hidden');
+                });
+            </script>
+        </div>
 
-    <!-- Modal para subir foto -->
-    <div>
-        
+        <!-- Subir Foto -->
+        <div>
 
-        <div id="modalSubirFoto" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden z-50">
-            <div class="w-full max-w-md p-6 bg-white rounded-lg shadow-lg h-screen overscroll-contain overflow-auto">
-                <h2 class="text-3xl font-bold text-center text-pink-600 mb-6">Subir Foto</h2>
+            <div id="modalSubirFoto" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden z-50 ">
+                <div class="w-full max-w-md p-6 bg-white rounded-lg shadow-lg h-screen overscroll-contain overflow-auto py-20">
+                    <h2 class="text-3xl font-bold text-center text-pink-600 mb-6">Subir Foto</h2>
 
-                <form action="op_create.php" method="POST" enctype="multipart/form-data">
-                    <label for="id_usuario" class="block text-sm font-semibold text-gray-700">ID Usuario:</label>
-                    <input type="text" name="id_usuario" required class="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500">
+                    <form action="foto/create/op_create.php" method="POST" enctype="multipart/form-data">
 
-                    <label for="foto" class="block text-sm font-semibold text-gray-700">Seleccionar Foto:</label>
-                    <input type="file" name="foto" required class="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500">
+                        <input type="hidden" name="url" value="<?= htmlspecialchars($url); ?>">
+                        <input type="hidden" name="id_admin" value="<?= htmlspecialchars($id_usuario); ?>">
 
-                    <button type="submit" class="w-full py-2 text-white bg-pink-600 rounded-lg hover:bg-pink-700">Subir Foto</button>
-                </form>
+                        <label for="id_usuario" class="block text-sm font-semibold text-gray-700">ID Usuario:</label>
+                        <select type="text" name="id_usuario" required class="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500" required>
+                            <option value="" disabled selected>elige</option>
+                            <?php foreach ($resultado_usuario as $fotos): ?>
+                                <option value="<?= $fotos['id'];  ?>"><?= $fotos['id'];  ?> - <?= $fotos['nombre_usuario']; ?> - <?= $fotos['rol']; ?></option>
+                            <?php endforeach; ?>
+                        </select>
 
-                <!-- Botón para cerrar el modal -->
-                <button id="closemodalSubirFoto" class="mt-4 w-full py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300">Cerrar</button>
+
+                        <label for="foto" class="block text-sm font-semibold text-gray-700">Seleccionar Foto:</label>
+                        <input type="file" name="foto" required class="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500">
+
+                        <button type="submit" class="w-full py-2 text-white bg-pink-600 rounded-lg hover:bg-pink-700">Subir Foto</button>
+                    </form>
+
+                    <!-- Botón para cerrar el modal -->
+                    <button id="closemodalSubirFoto" class="mt-4 w-full py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300">Cerrar</button>
+                </div>
             </div>
+
+
+            <script>
+                // Obtener los elementos del modal y los botones
+                const modalSubirFoto = document.getElementById('modalSubirFoto');
+                const openModalSubirFotoButton = document.getElementById('openModalSubirFoto');
+                const closeModalSubirFotoButton = document.getElementById('closemodalSubirFoto');
+
+                // Función para abrir el modal
+                openModalSubirFotoButton.addEventListener('click', () => {
+                    modalSubirFoto.classList.remove('hidden'); // Muestra el modal
+                });
+
+                // Función para cerrar el modal
+                closeModalSubirFotoButton.addEventListener('click', () => {
+                    modalSubirFoto.classList.add('hidden'); // Oculta el modal
+                });
+
+                // Cerrar el modal al hacer clic fuera de él
+                window.addEventListener('click', (event) => {
+                    if (event.target === modalSubirFoto) {
+                        modalSubirFoto.classList.add('hidden'); // Oculta el modal
+                    }
+                });
+            </script>
+        </div>
+
+        <!-- actualizar foto -->
+        <div>
+
+            <div id="updatePhotoModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden z-50 ">
+                <div class="w-full max-w-md p-6 bg-white rounded-lg shadow-lg py-10">
+                    <h2 class="text-3xl font-bold text-center text-pink-600 mb-6">Actualizar Foto</h2>
+
+                    <form action="foto/update/op_update.php" method="POST" enctype="multipart/form-data">
+                        <input type="hidden" name="id_admin" value="<?= $id_usuario ?>">
+                        <input type="hidden" name="url" value="<?= $url ?>">
+                        <input type="hidden" name="id_foto" id="update_id_foto">
+
+                        <label for="id_usuario" class="block text-sm font-semibold text-gray-700">ID Usuario</label>
+                        <select name="id_usuario" id="update_id_usuario" class="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500" required>
+                            <option id="usuario_option"></option>
+                            <?php foreach ($resultado_usuario as $fotos): ?>
+                                <option value="<?= $fotos['id'];  ?>"><?= $fotos['id'];  ?> - <?= $fotos['nombre_usuario']; ?> - <?= $fotos['rol']; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+
+                        <label for="current_foto" class="block text-sm font-semibold text-gray-700">Foto Actual</label>
+                        <div id="current_foto" class="mb-4">
+                            <img src="../assets/img/uploads/users/Fotos/" alt="Foto actual" class="w-20 h-20 rounded-full">
+                        </div>
+
+                        <label for="nueva_foto" class="block text-sm font-semibold text-gray-700">Subir Nueva Foto</label>
+                        <input type="file" name="nueva_foto" id="nueva_foto" class="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500" accept="image/*" required>
+
+                        <button type="submit" class="w-full py-2 text-white bg-pink-600 rounded-lg hover:bg-pink-700">Actualizar Foto</button>
+                    </form>
+
+                    <!-- Botón para cerrar el modal -->
+                    <button id="closeUpdatePhotoModal" class="mt-4 w-full py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300">Cerrar</button>
+                </div>
+            </div>
+
+            <script>
+                const updatePhotoModal = document.getElementById('updatePhotoModal');
+                const closeUpdatePhotoModalButton = document.getElementById('closeUpdatePhotoModal');
+                const photoFields = {
+                    id_foto: document.getElementById('update_id_foto'),
+                    id_usuario: document.getElementById('update_id_usuario'),
+                    usuario_option: document.getElementById('usuario_option'),
+                    current_foto: document.getElementById('current_foto').querySelector('img')
+                };
+
+                document.querySelectorAll('.openUpdatePhotoModalButton').forEach(button => {
+                    button.addEventListener('click', event => {
+                        const button = event.currentTarget;
+
+                        // Rellenar los campos del formulario con los datos del botón
+                        photoFields.id_foto.value = button.getAttribute('data-id-foto');
+                        photoFields.id_usuario.value = button.getAttribute('data-id-usuario');
+                        photoFields.usuario_option.innerText = button.getAttribute('data-nombre-usuario');
+                        photoFields.usuario_option.value = button.getAttribute('data-id-usuario');
+                        photoFields.current_foto.src = "../assets/img/uploads/" + button.getAttribute('data-url-foto');
+
+                        // Mostrar el modal
+                        updatePhotoModal.classList.remove('hidden');
+                    });
+                });
+
+                closeUpdatePhotoModalButton.addEventListener('click', () => {
+                    updatePhotoModal.classList.add('hidden');
+                });
+            </script>
+
+        </div>
+
+        <!-- Crear Coincidencia -->
+        <div>
+
+
+            <button class="openCreateModalButtonCoincidencia bg-pink-500 text-white px-2 py-2 rounded hover:bg-pink-600px-4 py-2 text-white bg-pink-600 rounded-lg hover:bg-pink-700"> Crear Coincidencia </button>
+
+            <div id="createModalCoincidencia" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden z-50">
+                <div class="w-full max-w-md p-6 bg-white rounded-lg shadow-lg py-10">
+                    <h2 class="text-3xl font-bold text-center text-pink-600 mb-6">Crear Coincidencia</h2>
+                    <form id="createFormCoincidencia" action="coincidencia/create/op_create.php" method="POST">
+                        <input type="hidden" name="url" value="<?= $url; ?>">
+                        <input type="hidden" name="id_admin" value="<?= $id_usuario; ?>">
+                        <div class="mb-4"> <label for="id_usuario" class="block text-sm font-semibold text-gray-700">ID Usuario</label> <select id="id_usuario" name="id_usuario" class="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500" required> <?php foreach ($resultado_usuario as $usuario): ?> <option value="<?= $usuario['id']; ?>"><?= $usuario['id']; ?> - <?= $usuario['nombre_usuario']; ?> - <?= $usuario['rol']; ?></option> <?php endforeach; ?> </select> </div>
+                        <div class="mb-4"> <label for="id_usuario_objetivo" class="block text-sm font-semibold text-gray-700">ID Usuario Objetivo</label> <select id="id_usuario_objetivo" name="id_usuario_objetivo" class="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500" required> <?php foreach ($resultado_usuario as $usuario): ?> <option value="<?= $usuario['id']; ?>"><?= $usuario['id']; ?> - <?= $usuario['nombre_usuario']; ?> - <?= $usuario['rol']; ?></option> <?php endforeach; ?> </select> </div>
+                        <div class="mb-4"> <label for="accion" class="block text-sm font-semibold text-gray-700">Acción</label>
+                            <div class="mt-1"> <label class="inline-flex items-center"> <input type="radio" name="accion" value="me_gusta" class="form-radio" required> <span class="ml-2">Me gusta</span> </label> <label class="inline-flex items-center ml-6"> <input type="radio" name="accion" value="no_me_gusta" class="form-radio" required> <span class="ml-2">No me gusta</span> </label> </div>
+                        </div>
+                        <div class="flex justify-between items-center"> <button type="submit" class="w-full py-2 text-white bg-pink-600 rounded-lg hover:bg-pink-700">Crear Coincidencia</button> </div>
+                    </form> <button type="button" class="m-2 w-full py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300" onclick="closeCreateModal('createModalCoincidencia')">Cancelar</button>
+                </div>
+            </div>
+
+            <script>
+                // Mostrar modal
+                const openModalButtonsCoincidencia = document.querySelectorAll('.openCreateModalButtonCoincidencia');
+                const modalCoincidencia = document.getElementById('createModalCoincidencia');
+
+                openModalButtonsCoincidencia.forEach(button => {
+                    button.addEventListener('click', () => {
+                        // Limpiar el formulario
+                        document.getElementById('createFormCoincidencia').reset();
+
+                        // Mostrar el modal
+                        modalCoincidencia.classList.remove('hidden');
+                    });
+                });
+
+                // Cerrar el modal
+                function closeCreateModal(modalId) {
+                    document.getElementById(modalId).classList.add('hidden');
+                }
+            </script>
+
         </div>
 
 
-        <script>
-            // Obtener los elementos del modal y los botones
-            const modalSubirFoto = document.getElementById('modalSubirFoto');
-            const openModalSubirFotoButton = document.getElementById('openModalSubirFoto');
-            const closeModalSubirFotoButton = document.getElementById('closemodalSubirFoto');
+        <div>
 
-            // Función para abrir el modal
-            openModalSubirFotoButton.addEventListener('click', () => {
-                modalSubirFoto.classList.remove('hidden'); // Muestra el modal
-            });
+            <button class="openUpdateModalButtonCoincidencia bg-pink-500 text-white px-2 py-1 rounded hover:bg-red-600 text-xs" data-id="<?= $coincidencia['id'] ?>" data-id_usuario="<?= $coincidencia['id_usuario'] ?>" data-id_usuario_objetivo="<?= $coincidencia['id_usuario_objetivo'] ?>" data-accion="<?= $coincidencia['accion'] ?>">
+                Actualizar
+            </button>
 
-            // Función para cerrar el modal
-            closeModalSubirFotoButton.addEventListener('click', () => {
-                modalSubirFoto.classList.add('hidden'); // Oculta el modal
-            });
+            <div id="updateModalCoincidencia" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden z-50">
+                <div class="w-full max-w-md p-6 bg-white rounded-lg shadow-lg py-10">
+                    <h2 class="text-3xl font-bold text-center text-pink-600 mb-6">Actualizar Coincidencia</h2>
+                    <form id="updateFormCoincidencia" action="coincidencia/update/op_update.php" method="POST">
+                        <input type="hidden" name="id" id="updateId">
+                        <input type="hidden" name="url" value="<?= $url; ?>">
+                        <input type="hidden" name="id_admin" value="<?= $id_usuario; ?>">
 
-            // Cerrar el modal al hacer clic fuera de él
-            window.addEventListener('click', (event) => {
-                if (event.target === modalSubirFoto) {
-                    modalSubirFoto.classList.add('hidden'); // Oculta el modal
+                        <div class="mb-4">
+                            <label for="updateIdUsuario" class="block text-sm font-semibold text-gray-700">ID Usuario</label>
+                            <select id="updateIdUsuario" name="id_usuario" class="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500" required>
+                                <?php foreach ($resultado_usuario as $usuario): ?>
+                                    <option value="<?= $usuario['id']; ?>"><?= $usuario['id']; ?> - <?= $usuario['nombre_usuario']; ?> - <?= $usuario['rol']; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="updateIdUsuarioObjetivo" class="block text-sm font-semibold text-gray-700">ID Usuario Objetivo</label>
+                            <select id="updateIdUsuarioObjetivo" name="id_usuario_objetivo" class="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500" required>
+                                <?php foreach ($resultado_usuario as $usuario): ?>
+                                    <option value="<?= $usuario['id']; ?>"><?= $usuario['id']; ?> - <?= $usuario['nombre_usuario']; ?> - <?= $usuario['rol']; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="accion" class="block text-sm font-semibold text-gray-700">Acción</label>
+                            <div class="mt-1">
+                                <label class="inline-flex items-center">
+                                    <input type="radio" name="accion" value="me_gusta" class="form-radio" required>
+                                    <span class="ml-2">Me gusta</span>
+                                </label>
+                                <label class="inline-flex items-center ml-6">
+                                    <input type="radio" name="accion" value="no_me_gusta" class="form-radio" required>
+                                    <span class="ml-2">No me gusta</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between items-center">
+                            <button type="submit" class="w-full py-2 text-white bg-pink-600 rounded-lg hover:bg-pink-700">Actualizar Coincidencia</button>
+                        </div>
+                    </form>
+                    <button type="button" class="m-2 w-full py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300" onclick="closeUpdateModal('updateModalCoincidencia')">Cancelar</button>
+                </div>
+            </div>
+
+            <script>
+                const openUpdateModalButtonsCoincidencia = document.querySelectorAll('.openUpdateModalButtonCoincidencia');
+                const updateModalCoincidencia = document.getElementById('updateModalCoincidencia');
+
+                openUpdateModalButtonsCoincidencia.forEach(button => {
+                    button.addEventListener('click', () => {
+                        const id = button.getAttribute('data-id');
+                        const id_usuario = button.getAttribute('data-id_usuario');
+                        const id_usuario_objetivo = button.getAttribute('data-id_usuario_objetivo');
+                        const accion = button.getAttribute('data-accion');
+
+                        document.getElementById('updateId').value = id;
+                        document.getElementById('updateIdUsuario').value = id_usuario;
+                        document.getElementById('updateIdUsuarioObjetivo').value = id_usuario_objetivo;
+                        document.querySelector(`input[name="accion"][value="${accion}"]`).checked = true;
+
+                        updateModalCoincidencia.classList.remove('hidden');
+                    });
+                });
+
+                function closeUpdateModal(modalId) {
+                    document.getElementById(modalId).classList.add('hidden');
                 }
-            });
-        </script>
-    </div>
+            </script>
+
+        </div>
 
 
 

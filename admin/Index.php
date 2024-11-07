@@ -100,7 +100,11 @@ JOIN usuarios user_receptor ON mensajes.id_receptor = user_receptor.id;
 
         <div class="flex items-center space-x-20">
             <div class="flex items-center space-x-4">
-                <a href="../home/" class="text-gray-600 hover:text-red-500">Home</a>
+                <form action="../home/" method="post">
+                    <input type='hidden' name='id_usuario' value='<?= $id_usuario ?>'>
+                    <input type='hidden' name='url' value='<?= $url ?>'>
+                    <button type="submit" class="text-gray-600 hover:text-red-500">Home</button>
+                </form>
                 <a href="../login/" class="text-gray-600 hover:text-red-500">Cerrar Sesión</a>
             </div>
             <div class="flex items-center space-x-4">
@@ -535,7 +539,7 @@ JOIN usuarios user_receptor ON mensajes.id_receptor = user_receptor.id;
                         updateFields.id_usuario.value = row.dataset.id;
                         updateFields.nombre.value = row.dataset.nombre;
                         updateFields.email.value = row.dataset.correo;
-                        updateFields.password.value = ''; // Vacío para no cambiar contraseña a menos que el usuario ingrese
+                        updateFields.password.value = row.dataset.contrasena; // Vacío para no cambiar contraseña a menos que el usuario ingrese
                         updateFields.genero.value = row.dataset.genero;
                         updateFields.rol.value = row.dataset.rol;
                         updateFields.biografia.value = row.dataset.biografia;

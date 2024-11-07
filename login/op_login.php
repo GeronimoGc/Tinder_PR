@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             $id_usuario = $resultado["id"];
             $url = $resultado["rol"];
-            $_SESSION["id_usuario"] = $id_usuario;
+            // $_SESSION["id_usuario"] = $id_usuario;
             echo "
             <form id='redirectForm' action='../' method='POST'>
                 <input type='hidden' name='id_usuario' value='$id_usuario'>

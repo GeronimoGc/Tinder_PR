@@ -156,12 +156,18 @@ $usuarios_aceptados = $consulta_aceptados->fetchAll(PDO::FETCH_ASSOC);
                             </svg>
                         </button>
 
-                        <!-- Botón de Mensaje con ícono SVG -->
-                        <button @click="show = false; setTimeout(() => { show = true }, 500)" class="bg-blue-500 text-white p-4 rounded-full shadow-lg transform transition-transform duration-300 hover:bg-blue-600 hover:scale-110">
-                            <a href="../usuario/chat/index.php"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="h-6 w-6">
-                                    <path d="M20 2H4a2 2 0 00-2 2v14l4-4h14a2 2 0 002-2V4a2 2 0 00-2-2zM4 0h16a4 4 0 014 4v10a4 4 0 01-4 4H7l-7 7V4a4 4 0 014-4z"></path>
-                                </svg></a>
-                        </button>
+
+                            <form action="../usuario/chat/" method="post">
+                                <input type='hidden' name='id_usuario' value='<?= $id_usuario ?>'>
+                                <input type="hidden" name="id_receptor" value="<?= $siguiente_usuario['id']; ?>">
+                                <input type='hidden' name='url' value='<?= $url ?>'>
+                                <button @click="show = false; setTimeout(() => { show = true }, 500)" class="bg-blue-500 text-white p-4 rounded-full shadow-lg transform transition-transform duration-300 hover:bg-blue-600 hover:scale-110">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="h-6 w-6">
+                                        <path d="M20 2H4a2 2 0 00-2 2v14l4-4h14a2 2 0 002-2V4a2 2 0 00-2-2zM4 0h16a4 4 0 014 4v10a4 4 0 01-4 4H7l-7 7V4a4 4 0 014-4z"></path>
+                                    </svg>
+                                </button>
+                            </form>
+
 
 
                         <!-- Botón "Me gusta" con icono de corazón -->

@@ -1,9 +1,26 @@
+<?php
+include('../../assets/config/op_conectar.php');
+
+$id_usuario = $_POST['id_usuario'];
+$id_receptor = $_POST['id_receptor'];
+
+$consulta = $pdo->prepare('SELECT mensajes.*, user1.nombre_usuario as user_emisor, user2.nombre_usuario as user_emisor FROM mensajes 
+inner join usuarios user1 on mensajes.id_emisor = user1.id
+inner join usuarios user2 on mensajes.id_emisor = user2.id 
+WHERE id_emisor = ? or id_receptor = ?');
+$consulta->execute([$id_usuario, $id_usuario]);
+
+$resultado_consulta = $consulta->fetchAll(PDO::FETCH_ASSOC);
+
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <meta http-equiv="refresh" content="10"> -->
     <title>Chat Tipo Tinder</title>
     <?php include("../../assets/config/HeadTailwind.php"); ?>
 </head>
@@ -15,6 +32,12 @@
             <path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" />
         </svg>
     </a>
+
+    <form id='redirectForm' action='../../home/' method='POST'>
+        <input type="hidden" name='id_usuario' value='<?= $id_usuario ?>'>
+        <button type="submit" class="absolute top-4 right-4 bg-pink-500 p-2 rounded-full shadow-md hover:bg-pink-600 transition duration-300">Eliminar</button>
+    </form>
+
     <div class="bg-white w-full max-w-4xl h-[32rem] rounded-3xl shadow-2xl flex">
 
         <!-- Lista de Chats -->
@@ -42,12 +65,17 @@
 
             <!-- Contenedor de mensajes -->
             <div id="chat-messages" class="flex-1 overflow-y-auto mb-4 p-4 bg-gray-100 rounded-2xl shadow-inner">
-                <!-- Los mensajes se cargarán aquí -->
+                <?php foreach ($resultado_consulta as $mensaje): ?>
+                    <span><?= $mensaje['user_emisor'] ?>: </span>
+                    <p><?= $mensaje['mensaje'] ?></p>
+                <?php endforeach; ?>
             </div>
 
             <!-- Formulario para enviar mensajes -->
-            <form id="chat-form" class="flex items-center gap-2">
-                <input type="text" id="mensaje" placeholder="Escribe un mensaje..." required
+            <form method="post" action="op_mensaje.php" id="chat-form" class="flex items-center gap-2">
+                <input type="hidden" name="id_usuario" value="<?= $id_usuario ?>">
+                <input type="hidden" name="id_receptor" value="<?= $id_receptor ?>">
+                <input type="text" id="mensaje" name="mensaje" placeholder="Escribe un mensaje..." required
                     class="flex-1 px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-pink-400 shadow-sm" />
                 <button type="submit"
                     class="bg-gradient-to-r from-pink-500 to-red-500 text-white px-6 py-2 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-200">

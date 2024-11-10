@@ -150,30 +150,36 @@ $usuarios_aceptados = $consulta_aceptados->fetchAll(PDO::FETCH_ASSOC);
                     </div>
                     <div class="flex items-center justify-between mt-6 space-x-4">
                         <!-- Botón "No me gusta" con icono de "X" -->
-                        <button @click="show = false; setTimeout(() => { show = true }, 500)" class="bg-red-500 text-white p-4 rounded-full shadow-lg transform transition-transform duration-300 hover:bg-red-600 hover:scale-110">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                        </button>
-
-
-                            <form action="../usuario/chat/" method="post">
-                                <input type='hidden' name='id_usuario' value='<?= $id_usuario ?>'>
-                                <input type="hidden" name="id_receptor" value="<?= $siguiente_usuario['id']; ?>">
-                                <input type='hidden' name='url' value='<?= $url ?>'>
-                                <button @click="show = false; setTimeout(() => { show = true }, 500)" class="bg-blue-500 text-white p-4 rounded-full shadow-lg transform transition-transform duration-300 hover:bg-blue-600 hover:scale-110">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="h-6 w-6">
-                                        <path d="M20 2H4a2 2 0 00-2 2v14l4-4h14a2 2 0 002-2V4a2 2 0 00-2-2zM4 0h16a4 4 0 014 4v10a4 4 0 01-4 4H7l-7 7V4a4 4 0 014-4z"></path>
-                                    </svg>
-                                </button>
-                            </form>
-
-
-
-                        <!-- Botón "Me gusta" con icono de corazón -->
-                        <form action="../usuario/" method="post">
+                        <form action="../admin/Coincidencia/create/op_create.php" method="post">
                             <input type='hidden' name='id_usuario' value='<?= $id_usuario ?>'>
+                            <input type="hidden" name="id_usuario_objetivo" value="<?= $siguiente_usuario['id']; ?>">
+                            <input type="hidden" name="accion" value="no_me_gusta">
+                            <input type='hidden' name='url' value='usuario'>
+                            <button @click="show = false; setTimeout(() => { show = true }, 500)" class="bg-red-500 text-white p-4 rounded-full shadow-lg transform transition-transform duration-300 hover:bg-red-600 hover:scale-110">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </form>
+
+
+                        <form action="../usuario/chat/" method="post">
+                            <input type='hidden' name='id_usuario' value='<?= $id_usuario ?>'>
+                            <input type="hidden" name="id_receptor" value="<?= $siguiente_usuario['id']; ?>">
                             <input type='hidden' name='url' value='<?= $url ?>'>
+                            <button @click="show = false; setTimeout(() => { show = true }, 500)" class="bg-blue-500 text-white p-4 rounded-full shadow-lg transform transition-transform duration-300 hover:bg-blue-600 hover:scale-110">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="h-6 w-6">
+                                    <path d="M20 2H4a2 2 0 00-2 2v14l4-4h14a2 2 0 002-2V4a2 2 0 00-2-2zM4 0h16a4 4 0 014 4v10a4 4 0 01-4 4H7l-7 7V4a4 4 0 014-4z"></path>
+                                </svg>
+                            </button>
+                        </form>
+
+
+                        <form action="../admin/Coincidencia/create/op_create.php" method="post">
+                            <input type='hidden' name='id_usuario' value='<?= $id_usuario ?>'>
+                            <input type="hidden" name="id_usuario_objetivo" value="<?= $siguiente_usuario['id']; ?>">
+                            <input type="hidden" name="accion" value="me_gusta">
+                            <input type='hidden' name='url' value='usuario'>
                             <button @click="show = false; setTimeout(() => { show = true }, 500)" class="bg-green-500 text-white p-4 rounded-full shadow-lg transform transition-transform duration-300 hover:bg-green-600 hover:scale-110">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 6.364l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />

@@ -65,7 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit();
         } elseif ($url == "usuario") {
             echo "
-                <form id='redirectForm' action='../../' method='POST' style='display: none;'>
+                <form id='redirectForm' action='../../../usuario/Perfil/' method='POST' style='display: none;'>
                     <input type='hidden' name='id_usuario' value='" . htmlspecialchars($id_usuario) . "'>
                     <input type='hidden' name='url' value='" . htmlspecialchars($url) . "'>
                 </form>

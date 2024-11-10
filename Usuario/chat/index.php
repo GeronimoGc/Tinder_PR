@@ -4,13 +4,21 @@ include('../../assets/config/op_conectar.php');
 $id_usuario = $_POST['id_usuario'];
 $id_receptor = $_POST['id_receptor'];
 
-$consulta = $pdo->prepare('SELECT mensajes.*, user1.nombre_usuario as user_emisor, user2.nombre_usuario as user_receptor FROM mensajes 
+$consulta_mensajes_recibidos = $pdo->prepare('SELECT mensajes.*, user1.nombre_usuario as user_emisor, user2.nombre_usuario as user_receptor FROM mensajes 
 inner join usuarios user1 on mensajes.id_emisor = user1.id
 inner join usuarios user2 on mensajes.id_receptor = user2.id 
-WHERE id_emisor = ? or id_receptor = ?');
-$consulta->execute([$id_usuario, $id_usuario]);
+WHERE mensajes.id_emisor IN (?, ?) AND mensajes.id_receptor IN (?, ?)');
+$consulta_mensajes_recibidos->execute([$id_usuario, $id_receptor, $id_usuario, $id_receptor]);
 
-$resultado_consulta = $consulta->fetchAll(PDO::FETCH_ASSOC);
+$resultado_consulta = $consulta_mensajes_recibidos->fetchAll(PDO::FETCH_ASSOC);
+
+$consulta_usuarios_charla = $pdo->prepare('SELECT mensajes.id_emisor, user1.nombre_usuario as user_emisor FROM mensajes 
+inner join usuarios user1 on mensajes.id_emisor = user1.id
+inner join usuarios user2 on mensajes.id_receptor = user2.id 
+where mensajes.id_emisor != ? and mensajes.id_receptor = ?
+group by id_emisor');
+$consulta_usuarios_charla->execute([$id_usuario, $id_usuario]);
+$resultado_usuarios_charla = $consulta_usuarios_charla->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 
@@ -20,6 +28,7 @@ $resultado_consulta = $consulta->fetchAll(PDO::FETCH_ASSOC);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Chat Tinder</title>
     <?= include("../../assets/config/HeadTailwind.php"); ?>
 </head>
@@ -39,31 +48,34 @@ $resultado_consulta = $consulta->fetchAll(PDO::FETCH_ASSOC);
             <h2 class="text-center text-lg font-semibold text-pink-600 mb-4">Chats</h2>
             <div id="chat-list" class="flex-1 overflow-y-auto space-y-3">
 
-                <button class="w-full p-3 rounded-lg bg-pink-100 text-gray-800 text-left hover:bg-pink-200 focus:outline-none">
-                    <strong>Usuario 1</strong>
-                    <p class="text-sm text-gray-600">Último mensaje...</p>
-                </button>
-                <button class="w-full p-3 rounded-lg bg-pink-100 text-gray-800 text-left hover:bg-pink-200 focus:outline-none">
-                    <strong>Usuario 2</strong>
-                    <p class="text-sm text-gray-600">Último mensaje...</p>
-                </button>
-                <!-- Agrega más contactos aquí -->
+                <?php foreach ($resultado_usuarios_charla as $resultado_usuario) : ?>
+
+                    <form id='redirectForm' action='../chat/' method='POST'>
+                        <input type="hidden" name='id_usuario' value='<?= $id_usuario ?>'>
+                        <input type="hidden" name='id_receptor' value='<?= $resultado_usuario['id_emisor'] ?>'>
+                        <button class="w-full p-3 rounded-lg bg-pink-100 text-gray-800 text-left hover:bg-pink-200 focus:outline-none">
+                            <strong><?= $resultado_usuario['user_emisor'] ?></strong>
+                            <p class="text-sm text-gray-600">Último mensaje...</p>
+                        </button>
+                    </form>
+                <?php endforeach ?>
+
             </div>
         </div>
 
 
-        <!-- Contenedor del Chat -->
+
         <div class="w-2/3 p-6 flex flex-col bg-white rounded-r-3xl">
-            <!-- Encabezado del chat -->
+
             <div class="text-center text-xl font-semibold text-pink-600 mb-4">Chat en Vivo</div>
 
-            <!-- Contenedor de mensajes -->
 
-            <div id="chat-messages" class="flex-1 overflow-y-auto mb-4 p-4 bg-gray-100 rounded-2xl shadow-inner">
+
+            <div id="chat-messages" class="flex-1 overflow-y-scroll mb-4 p-4 bg-gray-100 rounded-2xl shadow-inner flex flex-col-reverse">
                 <div class="space-y-2">
                     <?php foreach ($resultado_consulta as $mensaje): ?>
                         <?php if ($mensaje['id_emisor'] == $id_usuario): ?>
-                            <!-- Mensaje del emisor (actual usuario) -->
+
                             <div class="flex justify-end">
                                 <div class="bg-pink-500 text-white p-3 rounded-lg max-w-xs shadow">
                                     <span class="block text-sm font-semibold"><?= $mensaje['user_emisor'] ?>:</span>
@@ -71,7 +83,7 @@ $resultado_consulta = $consulta->fetchAll(PDO::FETCH_ASSOC);
                                 </div>
                             </div>
                         <?php else: ?>
-                            <!-- Mensaje del receptor -->
+
                             <div class="flex justify-start">
                                 <div class="bg-pink-300 text-black p-3 rounded-lg max-w-xs shadow">
                                     <span class="block text-sm font-semibold"><?= $mensaje['user_emisor'] ?>:</span>
@@ -84,7 +96,7 @@ $resultado_consulta = $consulta->fetchAll(PDO::FETCH_ASSOC);
             </div>
 
 
-            <!-- Formulario para enviar mensajes -->
+
             <form method="post" action="op_mensaje.php" id="chat-form" class="flex items-center gap-2">
                 <input type="hidden" name="id_usuario" value="<?= $id_usuario ?>">
                 <input type="hidden" name="id_receptor" value="<?= $id_receptor ?>">
@@ -98,5 +110,14 @@ $resultado_consulta = $consulta->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </div>
 
+    <script>
+        setInterval(() => {
+            location.reload();
+        }, 5000);
+    </script>
+
+
+
 </body>
+
 </html>

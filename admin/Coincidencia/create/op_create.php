@@ -32,7 +32,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </script>";
                 exit();
             } else {
-                header("Location: ../../../");
+                echo "
+                <form id='redirectForm' action='../../../home/' method='POST' style='display: none;'>
+                    <input type='hidden' name='id_usuario' value='" . htmlspecialchars($id_admin) . "'>
+                    <input type='hidden' name='url' value='" . htmlspecialchars($url) . "'>
+                </form>
+                <script>
+                    document.getElementById('redirectForm').submit();
+                </script>";
                 exit();
             }
         } else {

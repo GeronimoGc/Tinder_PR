@@ -3,12 +3,12 @@ session_start();
 include("../../assets/config/op_conectar.php");
 
 // Verificar que el usuario está autenticado
-if (!isset($_SESSION['id_usuario']) || $_SESSION['id_usuario'] == 0) {
+if (!isset($_POST['id_usuario']) || $_POST['id_usuario'] == 0) {
     header("Location: ../login/");
     exit();
 }
 
-$id_usuario = $_SESSION['id_usuario'];
+$id_usuario = $_POST['id_usuario'];
 
 // Obtener toda la información del usuario autenticado
 $consulta_usuario = $pdo->prepare("SELECT * FROM usuarios WHERE id = :id_usuario");
@@ -55,19 +55,21 @@ $usuario_actual = $consulta_usuario->fetch(PDO::FETCH_ASSOC);
         </div>
 
         <!-- Formulario de edición -->
-        <form action="procesar_edicion.php" method="POST" class="space-y-6">
+        <form action="../../admin/Usuario/Update/op_update.php" method="POST" class="space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-            <input type="hidden">
+            <input type="hidden" name="id_usuario" value="<?= $id_usuario ?>">
+            <input type="hidden" name="rol" value="<?= $usuario_actual['rol'] ?>">
+            <input type="hidden" name="url" value="usuario">
                 <!-- Nombre -->
                 <div>
                     <label for="nombre" class="block text-gray-700">Nombre:</label>
-                    <input type="text" id="nombre" name="nombre" value="<?= htmlspecialchars($usuario_actual['nombre_usuario']); ?>" class="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500">
+                    <input type="text" id="nombre" name="nombre_usuario" value="<?= htmlspecialchars($usuario_actual['nombre_usuario']); ?>" class="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500">
                 </div>
                 <!-- Email -->
                 <div>
                     <label for="email" class="block text-gray-700">Correo electrónico:</label>
-                    <input type="email" id="email" name="email" value="<?= htmlspecialchars($usuario_actual['email']); ?>" class="w-full border border-gray-300 rounded p-2w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500">
+                    <input type="email" id="email" name="email" value="<?= htmlspecialchars($usuario_actual['correo']); ?>" class="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500">
                 </div>
                 <!-- Edad -->
                 <div>
@@ -77,10 +79,10 @@ $usuario_actual = $consulta_usuario->fetch(PDO::FETCH_ASSOC);
                 <!-- Género -->
                 <div>
                     <label for="genero" class="block text-gray-700">Género:</label>
-                    <select id="genero" name="genero" class=w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500">
-                        <option value="Masculino" <?= ($usuario_actual['genero'] == 'Masculino') ? 'selected' : ''; ?>>Masculino</option>
-                        <option value="Femenino" <?= ($usuario_actual['genero'] == 'Femenino') ? 'selected' : ''; ?>>Femenino</option>
-                        <option value="Otro" <?= ($usuario_actual['genero'] == 'Otro') ? 'selected' : ''; ?>>Otro</option>
+                    <select id="genero" name="genero" class="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500">
+                        <option value="hombre" <?= ($usuario_actual['genero'] == 'Masculino') ? 'selected' : ''; ?>>Masculino</option>
+                        <option value="mujer" <?= ($usuario_actual['genero'] == 'Femenino') ? 'selected' : ''; ?>>Femenino</option>
+                        <option value="otro" <?= ($usuario_actual['genero'] == 'Otro') ? 'selected' : ''; ?>>Otro</option>
                     </select>
                 </div>
             </div>
@@ -95,7 +97,7 @@ $usuario_actual = $consulta_usuario->fetch(PDO::FETCH_ASSOC);
             <div class="mb-4">
                 <img src="../../assets/img/uploads/<?= htmlspecialchars($usuario_actual['foto_perfil']); ?>" alt="Foto de perfil actual" class="mt-2 h-20 w-20 rounded-full">
                 <label for="foto_perfil" class="block text-gray-700">Foto de perfil:</label>
-                <input type="file" name="foto_perfil" id="foto_perfil" class="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500">
+                <input type="file" name="foto_perfil_usuario" id="foto_perfil" class="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500">
             </div>
 
             <!-- Botón de guardar cambios -->

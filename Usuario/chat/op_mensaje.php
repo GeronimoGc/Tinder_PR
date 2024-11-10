@@ -1,5 +1,5 @@
 <?php
-include('../../../assets/config/op_conectar.php'); // Incluye el archivo de conexión
+include('../../assets/config/op_conectar.php'); // Incluye el archivo de conexión
 
 
 $url = $_POST['url'];

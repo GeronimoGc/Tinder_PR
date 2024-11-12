@@ -143,7 +143,7 @@ $usuarios_aceptados = $consulta_aceptados->fetchAll(PDO::FETCH_ASSOC);
             <div class="max-w-sm w-full bg-white rounded-lg shadow-lg p-6 relative mt-10" x-data="{ show: true }" x-show="show">
                 <?php if ($siguiente_usuario): ?>
                     <div class="relative h-64 w-full rounded-lg overflow-hidden mb-4">
-                        <img class="w-full h-full object-cover" src="../assets/img/uploads/17_loli1.jpg" <?= $siguiente_usuario['foto_perfil']; ?>" alt="Foto de perfil">
+                        <img class="w-full h-full object-cover" src="../assets/img/uploads/<?= $siguiente_usuario['foto_perfil']; ?>" alt="Foto de perfil">
                     </div>
                     <div class="text-center">
                         <h2 class="text-2xl font-semibold text-gray-800"><?= $siguiente_usuario['nombre_usuario']; ?></h2>

@@ -15,7 +15,7 @@
         <div class="animated-background"></div>
     </div>
     <div class="w-full flex justify-start p-4 absolute top-0 left-0">
-        <a href="../login" class="py-2 px-4">
+        <a href="../login/" class="py-2 px-4">
             <img src="https://logo-marque.com/wp-content/uploads/2020/09/Tinder-Logo.png" alt="Tinder Logo" class="h-10">
         </a>
         <a href="../" class="absolute top-4 right-4 bg-pink-500 p-2 rounded-full shadow-md hover:bg-pink-600 transition duration-300">
@@ -57,9 +57,9 @@
             <label for="biografia" class="block text-sm font-semibold text-gray-700">Biografía</label>
             <textarea name="biografia" id="biografia" rows="3" class="w-full px-4 py-2 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500" placeholder="Cuenta un poco sobre ti..."></textarea>
 
-            <!-- Foto de Perfil -->
-            <label for="foto_perfil_usuario" class="block text-sm font-semibold text-gray-700">Foto de Perfil</label>
-            <input type="file" name="foto_perfil_usuario" id="foto_perfil_usuario" class="w-full px-4 py-2 mb-6 text-gray-700 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-pink-500" required>
+            <!-- Foto de Perfil --> 
+            <label for="foto_perfil_usuario" class="block text-sm font-semibold text-pink-700">Foto de Perfil</label>
+            <input type="file" name="foto_perfil_usuario" id="foto_perfil_usuario" class="w-full px-4 py-2 mb-6 text-pink-700 border border-pink-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-pink-500" required>
 
             <!-- Botón de Registro -->
             <button type="submit" class="w-full py-3 mt-2 text-white font-semibold bg-pink-600 rounded-lg shadow-lg hover:bg-pink-700 transition duration-300">

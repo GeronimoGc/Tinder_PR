@@ -1,3 +1,4 @@
+-- SQLBook: Code
 -- Crear la base de datos
 CREATE DATABASE IF NOT EXISTS tinder;
 USE tinder;

@@ -37,6 +37,23 @@ $consulta_aceptados = $pdo->prepare("
 ");
 $consulta_aceptados->execute([':id_usuario' => $id_usuario]);
 $usuarios_aceptados = $consulta_aceptados->fetchAll(PDO::FETCH_ASSOC);
+
+$consulta_match = $pdo->prepare('select coincidencias.id, coincidencias.id_usuario, user1.nombre_usuario as usuario, coincidencias.id_usuario_objetivo, user2.nombre_usuario as usuario_objetivo, coincidencias.accion, coincidencias.fecha_coincidencia, user2.foto_perfil from coincidencias
+inner join usuarios user1 on coincidencias.id_usuario = user1.id
+inner join usuarios user2 on coincidencias.id_usuario_objetivo = user2.id
+where coincidencias.id_usuario = ? and coincidencias.accion = "me_gusta"');
+$consulta_match->execute([$id_usuario]);
+$consulta_match_enviados = $consulta_match->fetch(PDO::FETCH_ASSOC);
+
+
+
+
+
+
+
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -54,6 +71,12 @@ $usuarios_aceptados = $consulta_aceptados->fetchAll(PDO::FETCH_ASSOC);
             background-size: 50px;
             overflow: hidden;
         }
+
+        .modal {
+            display: none;
+
+
+        }
     </style>
 </head>
 
@@ -69,9 +92,7 @@ $usuarios_aceptados = $consulta_aceptados->fetchAll(PDO::FETCH_ASSOC);
             <button href="../Usuario/Perfil/">
                 <div class="flex items-center space-x-4 p-4 bg-black-400 rounded-lg shadow-lg h-14">
                     <!-- Icono de fuego antes de la foto -->
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6 text-yellow-400">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.5 3C14.328 3 15 3.672 15 4.5S14.328 6 13.5 6 12 5.328 12 4.5 12.672 3 13.5 3zM18.5 3C19.328 3 20 3.672 20 4.5S19.328 6 18.5 6 17 5.328 17 4.5 17.672 3 18.5 3zM4.5 3C5.328 3 6 3.672 6 4.5S5.328 6 4.5 6 3 5.328 3 4.5 3.672 3 4.5 3zM12 8C8.69 8 6 10.69 6 14C6 16.07 7.3 17.93 9.21 19.34C8.56 19.76 8 20.52 8 21.5C8 22.88 9.12 24 10.5 24C11.49 24 12.42 23.36 12.87 22.5C13.87 21.29 14.88 18.61 14.88 15.34C14.88 14.21 14.4 13.2 13.68 12.73C13.14 12.33 13 11.61 13 11.05C13 9.24 12.24 8 12 8zM9.21 16.34C9.49 16.08 9.89 15.87 10.26 15.95C10.58 16.02 10.88 16.28 11.02 16.61C11.15 16.94 11.12 17.33 10.91 17.63C10.69 17.93 10.31 18.14 9.96 18.07C9.64 18.01 9.35 17.74 9.21 17.47C9.08 17.2 9.06 16.91 9.21 16.34zM12 15.5C12 15.5 11.5 16 11 16C10.5 16 10 15.5 10 15C10 14.5 10.5 14 11 14C11.5 14 12 14.5 12 15C12 15.5 12.5 15 13 15C13.5 15 14 14.5 14 14C14 13.5 13.5 13 13 13C12.5 13 12 13.5 12 14C12 14.5 12.5 15 12 15.5z" />
-                    </svg>
+                    <img src="https://static.vecteezy.com/system/resources/previews/023/986/672/non_2x/tinder-app-logo-tinder-app-logo-transparent-tinder-app-icon-transparent-free-free-png.png" alt="Tinder Logo" class="h-10">
 
                     <!-- Imagen y nombre dentro del cuadro blando -->
                     <div class="flex items-center space-x-4">
@@ -91,6 +112,10 @@ $usuarios_aceptados = $consulta_aceptados->fetchAll(PDO::FETCH_ASSOC);
     </header>
 
     <main>
+
+
+
+
         <!-- Barra lateral -->
         <div x-show="sidebarOpen" @click.away="sidebarOpen = false" class="fixed inset-0 flex justify-end z-50">
             <div @click="sidebarOpen = false" class="w-full h-full bg-black opacity-50 absolute"></div>
@@ -120,12 +145,40 @@ $usuarios_aceptados = $consulta_aceptados->fetchAll(PDO::FETCH_ASSOC);
                         </button>
                     </form>
 
+
+                    <form action="../usuario/chat/" method="post">
+                        <input type='hidden' name='id_usuario' value='<?= htmlspecialchars($id_usuario) ?>'>
+                        <input type="hidden" name="id_receptor" value="0">
+                        <input type='hidden' name='url' value='<?= htmlspecialchars($url) ?>'>
+                        <button href="../Usuario/Perfil/" class="flex items-center space-x-3 text-gray-600 hover:bg-gray-200 p-2 rounded-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-pink-500" fill="currentcolor" viewBox="0 0 640 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                                <path d="M208 352c114.9 0 208-78.8 208-176S322.9 0 208 0S0 78.8 0 176c0 38.6 14.7 74.3 39.6 103.4c-3.5 9.4-8.7 17.7-14.2 24.7c-4.8 6.2-9.7 11-13.3 14.3c-1.8 1.6-3.3 2.9-4.3 3.7c-.5 .4-.9 .7-1.1 .8l-.2 .2s0 0 0 0s0 0 0 0C1 327.2-1.4 334.4 .8 340.9S9.1 352 16 352c21.8 0 43.8-5.6 62.1-12.5c9.2-3.5 17.8-7.4 25.2-11.4C134.1 343.3 169.8 352 208 352zM448 176c0 112.3-99.1 196.9-216.5 207C255.8 457.4 336.4 512 432 512c38.2 0 73.9-8.7 104.7-23.9c7.5 4 16 7.9 25.2 11.4c18.3 6.9 40.3 12.5 62.1 12.5c6.9 0 13.1-4.5 15.2-11.1c2.1-6.6-.2-13.8-5.8-17.9c0 0 0 0 0 0s0 0 0 0l-.2-.2c-.2-.2-.6-.4-1.1-.8c-1-.8-2.5-2-4.3-3.7c-3.6-3.3-8.5-8.1-13.3-14.3c-5.5-7-10.7-15.4-14.2-24.7c24.9-29 39.6-64.7 39.6-103.4c0-92.8-84.9-168.9-192.6-175.5c.4 5.1 .6 10.3 .6 15.5z" />
+                            </svg>
+                            <span>chat</span>
+                        </button>
+                    </form>
+
+                    <button onclick="closeModal()" class="flex items-center space-x-3 text-gray-600 hover:bg-gray-200 p-2 rounded-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-pink-500" fill="currentcolor" viewBox="0 0 24 24" stroke="currentColor">
+                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                        </svg>
+                        Ver Mis Matches
+                    </button>
+
+                    <button id="openModalBtn" class="px-4 py-2 bg-pink-500 text-white rounded-md hover:bg-pink-600 transition duration-300">
+                        Ver Mis Matches
+                    </button>
+
+
+
                     <a href="../" class="flex items-center space-x-3 text-gray-600 hover:bg-gray-200 p-2 rounded-lg">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-500" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M16 13v-2H7V9l-5 5 5 5v-3h9z" />
                         </svg>
                         <span class="text-red-500">Cerrar sesión</span>
                     </a>
+
+
                 </nav>
 
                 <div class="flex-grow"></div>
@@ -151,8 +204,8 @@ $usuarios_aceptados = $consulta_aceptados->fetchAll(PDO::FETCH_ASSOC);
                     <div class="flex items-center justify-between mt-6 space-x-4">
                         <!-- Botón "No me gusta" con icono de "X" -->
                         <form action="../admin/Coincidencia/create/op_create.php" method="post">
-                            <input type='hidden' name='id_usuario' value='<?= $id_usuario ?>'>
-                            <input type="hidden" name="id_usuario_objetivo" value="<?= $siguiente_usuario['id']; ?>">
+                            <input type='hidden' name='id_usuario' value='<?= htmlspecialchars($id_usuario) ?>'>
+                            <input type="hidden" name="id_usuario_objetivo" value="<?= htmlspecialchars($siguiente_usuario['id']); ?>">
                             <input type="hidden" name="accion" value="no_me_gusta">
                             <input type='hidden' name='url' value='usuario'>
                             <button @click="show = false; setTimeout(() => { show = true }, 500)" class="bg-red-500 text-white p-4 rounded-full shadow-lg transform transition-transform duration-300 hover:bg-red-600 hover:scale-110">
@@ -164,9 +217,9 @@ $usuarios_aceptados = $consulta_aceptados->fetchAll(PDO::FETCH_ASSOC);
 
 
                         <form action="../usuario/chat/" method="post">
-                            <input type='hidden' name='id_usuario' value='<?= $id_usuario ?>'>
-                            <input type="hidden" name="id_receptor" value="<?= $siguiente_usuario['id']; ?>">
-                            <input type='hidden' name='url' value='<?= $url ?>'>
+                            <input type='hidden' name='id_usuario' value='<?= htmlspecialchars($id_usuario) ?>'>
+                            <input type="hidden" name="id_receptor" value="<?= htmlspecialchars($siguiente_usuario['id']); ?>">
+                            <input type='hidden' name='url' value='<?= htmlspecialchars($url) ?>'>
                             <button @click="show = false; setTimeout(() => { show = true }, 500)" class="bg-blue-500 text-white p-4 rounded-full shadow-lg transform transition-transform duration-300 hover:bg-blue-600 hover:scale-110">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="h-6 w-6">
                                     <path d="M20 2H4a2 2 0 00-2 2v14l4-4h14a2 2 0 002-2V4a2 2 0 00-2-2zM4 0h16a4 4 0 014 4v10a4 4 0 01-4 4H7l-7 7V4a4 4 0 014-4z"></path>
@@ -176,8 +229,8 @@ $usuarios_aceptados = $consulta_aceptados->fetchAll(PDO::FETCH_ASSOC);
 
 
                         <form action="../admin/Coincidencia/create/op_create.php" method="post">
-                            <input type='hidden' name='id_usuario' value='<?= $id_usuario ?>'>
-                            <input type="hidden" name="id_usuario_objetivo" value="<?= $siguiente_usuario['id']; ?>">
+                            <input type='hidden' name='id_usuario' value='<?= htmlspecialchars($id_usuario) ?>'>
+                            <input type="hidden" name="id_usuario_objetivo" value="<?= htmlspecialchars($siguiente_usuario['id']); ?>">
                             <input type="hidden" name="accion" value="me_gusta">
                             <input type='hidden' name='url' value='usuario'>
                             <button @click="show = false; setTimeout(() => { show = true }, 500)" class="bg-green-500 text-white p-4 rounded-full shadow-lg transform transition-transform duration-300 hover:bg-green-600 hover:scale-110">
@@ -194,9 +247,130 @@ $usuarios_aceptados = $consulta_aceptados->fetchAll(PDO::FETCH_ASSOC);
             </div>
         </div>
     </main>
-    <footer class="w-full bg-gray-900 text-white text-center p-4">
+
+    <!-- Footer -->
+    <footer class="w-full bg-gray-900 text-white text-center p-4 mt-auto">
         <p>&copy; <?= date("Y"); ?> Tinder Clone. Todos los derechos reservados.</p>
     </footer>
+
+
+    <div>
+        <div>
+
+
+            <!-- Modal -->
+            <div id="myModal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+                <div class="bg-white w-full max-w-lg p-6 rounded-lg shadow-lg relative">
+                    <!-- Botón para cerrar el modal -->
+                    <button id="closeModalBtn" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800">&times;</button>
+
+                    <!-- Título del modal -->
+                    <h2 class="text-2xl font-semibold mb-4 text-center text-pink-600">Mis Matches</h2>
+
+                    <!-- Pestañas -->
+                    <div class="flex justify-around mb-4">
+                        <button id="tab-completos" class="focus:outline-none px-4 py-2 text-pink-500 border-b-2 border-pink-500 hover:text-pink-700 transition duration-300">
+                            Matches Completos
+                        </button>
+                        <button id="tab-enviados" class="focus:outline-none px-4 py-2 text-gray-500 hover:text-pink-500 transition duration-300">
+                            Matches Enviados
+                        </button>
+                        <button id="tab-recibidos" class="focus:outline-none px-4 py-2 text-gray-500 hover:text-pink-500 transition duration-300">
+                            Matches Recibidos
+                        </button>
+                    </div>
+
+                    <!-- Contenido de cada pestaña -->
+                    <div class="space-y-4">
+                        <!-- Matches Completos -->
+                        <div id="content-completos" class="space-y-2"></div>
+
+                        <!-- Matches Enviados -->
+                        <div id="content-enviados" class="hidden space-y-2">
+                            <?php foreach ($consulta_match_enviados as $consulta_match): ?>
+                                <div class="p-4 bg-gray-100 rounded flex items-center space-x-4 hover:bg-gray-200 transition duration-300">
+                                    <img src="../assets/img/uploads/<?php echo htmlspecialchars($consulta_match['foto_perfil']); ?>" class="w-12 h-12 rounded-full" alt="Foto de Usuario Enviado">
+                                    <div>
+                                        <p class="text-lg font-semibold text-gray-800"><?php echo htmlspecialchars($consulta_match['usuario_objetivo']); ?></p>
+                                        <p class="text-gray-600">Match enviado</p>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+
+                        <!-- Matches Recibidos -->
+                        <div id="content-recibidos" class="hidden space-y-2"></div>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                $(document).ready(function() {
+                    // Abrir el modal
+                    function openModal() {
+                        $('#myModal').fadeIn(); // Usamos fadeIn para mostrar el modal
+                        loadMatches('completos'); // Cargar datos de "completos" cuando se abre el modal
+                    }
+
+                    // Cerrar el modal
+                    function closeModal() {
+                        $('#myModal').fadeOut(); // Usamos fadeOut para ocultar el modal
+                    }
+
+                    // Cerrar modal si se hace clic fuera de él
+                    $(window).click(function(event) {
+                        if ($(event.target).is('#myModal')) {
+                            closeModal();
+                        }
+                    });
+
+                    // Función para mostrar pestañas y cargar datos con AJAX
+                    function showTab(tab) {
+                        const tabs = ['completos', 'enviados', 'recibidos'];
+                        tabs.forEach(t => {
+                            $(`#tab-${t}`).removeClass('text-pink-500 border-pink-500').addClass('text-gray-500');
+                            $(`#content-${t}`).addClass('hidden');
+                        });
+
+                        $(`#tab-${tab}`).addClass('text-pink-500 border-pink-500').removeClass('text-gray-500');
+                        $(`#content-${tab}`).removeClass('hidden');
+                    }
+
+                    // Función para cargar los matches (usando PHP en vez de AJAX)
+                    function loadMatches(tab) {
+                        // Lógica para cargar matches basados en la pestaña seleccionada
+                        if (tab === 'completos') {
+                            $('#content-completos').html('Aquí irían los matches completos desde PHP');
+                        } else if (tab === 'enviados') {
+                            $('#content-enviados').html('Aquí irían los matches enviados desde PHP');
+                        } else if (tab === 'recibidos') {
+                            $('#content-recibidos').html('Aquí irían los matches recibidos desde PHP');
+                        }
+                    }
+
+                    // Eventos de apertura y cierre del modal
+                    $('#openModalBtn').click(openModal); // Asigna el evento de apertura
+                    $('#closeModalBtn').click(closeModal); // Asigna el evento de cierre
+
+                    // Pestañas
+                    $('#tab-completos').click(function() {
+                        showTab('completos');
+                    });
+                    $('#tab-enviados').click(function() {
+                        showTab('enviados');
+                    });
+                    $('#tab-recibidos').click(function() {
+                        showTab('recibidos');
+                    });
+                });
+            </script>
+        </div>
+
+    </div>
+
+
+
+
 </body>
 
 </html>

@@ -93,12 +93,13 @@ $usuario_actual = $consulta_usuario->fetch(PDO::FETCH_ASSOC);
                 <textarea id="biografia" name="biografia" class="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500"><?= htmlspecialchars($usuario_actual['biografia']); ?></textarea>
             </div>
 
-            <!-- Foto perfil -->
-            <div class="mb-4">
-                <img src="../../assets/img/uploads/<?= htmlspecialchars($usuario_actual['foto_perfil']); ?>" alt="Foto de perfil actual" class="mt-2 h-20 w-20 rounded-full">
-                <label for="foto_perfil" class="block text-gray-700">Foto de perfil:</label>
-                <input type="file" name="foto_perfil_usuario" id="foto_perfil" class="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:border-pink-500">
-            </div>
+<!-- Foto perfil -->
+<div class="flex flex-col items-center space-y-4 mt-6">
+    <img src="../../assets/img/uploads/<?= htmlspecialchars($usuario_actual['foto_perfil']); ?>" alt="Foto de perfil actual" class="h-20 w-20 rounded-full">
+    <label for="foto_perfil" class="text-pink-900">Foto de perfil:</label>
+    <input type="file" name="foto_perfil_usuario" id="foto_perfil" class="bg-pink-900 text-white px-4 py-2 rounded hover:bg-pink-300">
+</div>
+
 
             <!-- Botón de guardar cambios -->
             <div class="text-center">

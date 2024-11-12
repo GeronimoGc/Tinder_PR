@@ -7,7 +7,7 @@ $id_receptor = $_POST['id_receptor'];
 $consulta_mensajes_recibidos = $pdo->prepare('SELECT mensajes.*, user1.nombre_usuario as user_emisor, user2.nombre_usuario as user_receptor FROM mensajes 
 inner join usuarios user1 on mensajes.id_emisor = user1.id
 inner join usuarios user2 on mensajes.id_receptor = user2.id 
-WHERE mensajes.id_emisor IN (?, ?) AND mensajes.id_receptor IN (?, ?)');
+WHERE mensajes.id_emisor IN (?, ?) AND mensajes.id_receptor IN (?, ?) order by fecha_envio asc');
 $consulta_mensajes_recibidos->execute([$id_usuario, $id_receptor, $id_usuario, $id_receptor]);
 
 $resultado_consulta = $consulta_mensajes_recibidos->fetchAll(PDO::FETCH_ASSOC);
@@ -82,6 +82,7 @@ $resultado_usuarios_charla = $consulta_usuarios_charla->fetchAll(PDO::FETCH_ASSO
                                     <p class="text-sm"><?= $mensaje['mensaje'] ?></p>
                                 </div>
                             </div>
+
                         <?php else: ?>
 
                             <div class="flex justify-start">
@@ -113,8 +114,26 @@ $resultado_usuarios_charla = $consulta_usuarios_charla->fetchAll(PDO::FETCH_ASSO
     <script>
         setInterval(() => {
             location.reload();
-        }, 5000);
+        }, 10000);
+
     </script>
+
+<!-- <script>
+
+    function updateChat() {
+        fetch('index.php?update_chat=1')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('chat-messages').innerHTML = data;
+            })
+            .catch(error => console.error('Error al actualizar el chat:', error));
+    }
+
+    setInterval(updateChat, 10000);
+
+    window.onload = updateChat;
+</script> -->
+
 
 
 

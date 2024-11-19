@@ -181,8 +181,6 @@ $consulta_match_enviados = $consulta_match->fetch(PDO::FETCH_ASSOC);
 
                 </nav>
 
-                <div class="flex-grow"></div>
-
                 <!-- Botón de ayuda -->
                 <button class="w-full text-center bg-pink-500 text-white py-2 rounded-lg hover:bg-pink-600">
                     Ayuda
@@ -252,123 +250,6 @@ $consulta_match_enviados = $consulta_match->fetch(PDO::FETCH_ASSOC);
     <footer class="w-full bg-gray-900 text-white text-center p-4 mt-auto">
         <p>&copy; <?= date("Y"); ?> Tinder Clone. Todos los derechos reservados.</p>
     </footer>
-
-
-    <div>
-        <div>
-
-
-            <!-- Modal -->
-            <div id="myModal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-                <div class="bg-white w-full max-w-lg p-6 rounded-lg shadow-lg relative">
-                    <!-- Botón para cerrar el modal -->
-                    <button id="closeModalBtn" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800">&times;</button>
-
-                    <!-- Título del modal -->
-                    <h2 class="text-2xl font-semibold mb-4 text-center text-pink-600">Mis Matches</h2>
-
-                    <!-- Pestañas -->
-                    <div class="flex justify-around mb-4">
-                        <button id="tab-completos" class="focus:outline-none px-4 py-2 text-pink-500 border-b-2 border-pink-500 hover:text-pink-700 transition duration-300">
-                            Matches Completos
-                        </button>
-                        <button id="tab-enviados" class="focus:outline-none px-4 py-2 text-gray-500 hover:text-pink-500 transition duration-300">
-                            Matches Enviados
-                        </button>
-                        <button id="tab-recibidos" class="focus:outline-none px-4 py-2 text-gray-500 hover:text-pink-500 transition duration-300">
-                            Matches Recibidos
-                        </button>
-                    </div>
-
-                    <!-- Contenido de cada pestaña -->
-                    <div class="space-y-4">
-                        <!-- Matches Completos -->
-                        <div id="content-completos" class="space-y-2"></div>
-
-                        <!-- Matches Enviados -->
-                        <div id="content-enviados" class="hidden space-y-2">
-                            <?php foreach ($consulta_match_enviados as $consulta_match): ?>
-                                <div class="p-4 bg-gray-100 rounded flex items-center space-x-4 hover:bg-gray-200 transition duration-300">
-                                    <img src="../assets/img/uploads/<?php echo htmlspecialchars($consulta_match['foto_perfil']); ?>" class="w-12 h-12 rounded-full" alt="Foto de Usuario Enviado">
-                                    <div>
-                                        <p class="text-lg font-semibold text-gray-800"><?php echo htmlspecialchars($consulta_match['usuario_objetivo']); ?></p>
-                                        <p class="text-gray-600">Match enviado</p>
-                                    </div>
-                                </div>
-                            <?php endforeach; ?>
-                        </div>
-
-                        <!-- Matches Recibidos -->
-                        <div id="content-recibidos" class="hidden space-y-2"></div>
-                    </div>
-                </div>
-            </div>
-
-            <script>
-                $(document).ready(function() {
-                    // Abrir el modal
-                    function openModal() {
-                        $('#myModal').fadeIn(); // Usamos fadeIn para mostrar el modal
-                        loadMatches('completos'); // Cargar datos de "completos" cuando se abre el modal
-                    }
-
-                    // Cerrar el modal
-                    function closeModal() {
-                        $('#myModal').fadeOut(); // Usamos fadeOut para ocultar el modal
-                    }
-
-                    // Cerrar modal si se hace clic fuera de él
-                    $(window).click(function(event) {
-                        if ($(event.target).is('#myModal')) {
-                            closeModal();
-                        }
-                    });
-
-                    // Función para mostrar pestañas y cargar datos con AJAX
-                    function showTab(tab) {
-                        const tabs = ['completos', 'enviados', 'recibidos'];
-                        tabs.forEach(t => {
-                            $(`#tab-${t}`).removeClass('text-pink-500 border-pink-500').addClass('text-gray-500');
-                            $(`#content-${t}`).addClass('hidden');
-                        });
-
-                        $(`#tab-${tab}`).addClass('text-pink-500 border-pink-500').removeClass('text-gray-500');
-                        $(`#content-${tab}`).removeClass('hidden');
-                    }
-
-                    // Función para cargar los matches (usando PHP en vez de AJAX)
-                    function loadMatches(tab) {
-                        // Lógica para cargar matches basados en la pestaña seleccionada
-                        if (tab === 'completos') {
-                            $('#content-completos').html('Aquí irían los matches completos desde PHP');
-                        } else if (tab === 'enviados') {
-                            $('#content-enviados').html('Aquí irían los matches enviados desde PHP');
-                        } else if (tab === 'recibidos') {
-                            $('#content-recibidos').html('Aquí irían los matches recibidos desde PHP');
-                        }
-                    }
-
-                    // Eventos de apertura y cierre del modal
-                    $('#openModalBtn').click(openModal); // Asigna el evento de apertura
-                    $('#closeModalBtn').click(closeModal); // Asigna el evento de cierre
-
-                    // Pestañas
-                    $('#tab-completos').click(function() {
-                        showTab('completos');
-                    });
-                    $('#tab-enviados').click(function() {
-                        showTab('enviados');
-                    });
-                    $('#tab-recibidos').click(function() {
-                        showTab('recibidos');
-                    });
-                });
-            </script>
-        </div>
-
-    </div>
-
-
 
 
 </body>

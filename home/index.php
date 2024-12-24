@@ -158,17 +158,17 @@ $consulta_match_enviados = $consulta_match->fetch(PDO::FETCH_ASSOC);
                         </button>
                     </form>
 
-                    <button onclick="closeModal()" class="flex items-center space-x-3 text-gray-600 hover:bg-gray-200 p-2 rounded-lg">
+                    <form action="matchs/" method="post">
+                        <input type='hidden' name='id_usuario' value='<?= htmlspecialchars($id_usuario) ?>'>
+                        <input type="hidden" name="id_receptor" value="0">
+                        <input type='hidden' name='url' value='<?= htmlspecialchars($url) ?>'>
+                        <button href="matchs/" class="flex items-center space-x-3 text-gray-600 hover:bg-gray-200 p-2 rounded-lg">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-pink-500" fill="currentcolor" viewBox="0 0 24 24" stroke="currentColor">
                             <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
                         </svg>
                         Ver Mis Matches
                     </button>
-
-                    <button id="openModalBtn" class="px-4 py-2 bg-pink-500 text-white rounded-md hover:bg-pink-600 transition duration-300">
-                        Ver Mis Matches
-                    </button>
-
+                    </form>
 
 
                     <a href="../" class="flex items-center space-x-3 text-gray-600 hover:bg-gray-200 p-2 rounded-lg">
@@ -214,7 +214,7 @@ $consulta_match_enviados = $consulta_match->fetch(PDO::FETCH_ASSOC);
                         </form>
 
 
-                        <form action="../usuario/chat/" method="post">
+                        <!-- <form action="../usuario/chat/" method="post">
                             <input type='hidden' name='id_usuario' value='<?= htmlspecialchars($id_usuario) ?>'>
                             <input type="hidden" name="id_receptor" value="<?= htmlspecialchars($siguiente_usuario['id']); ?>">
                             <input type='hidden' name='url' value='<?= htmlspecialchars($url) ?>'>
@@ -223,7 +223,7 @@ $consulta_match_enviados = $consulta_match->fetch(PDO::FETCH_ASSOC);
                                     <path d="M20 2H4a2 2 0 00-2 2v14l4-4h14a2 2 0 002-2V4a2 2 0 00-2-2zM4 0h16a4 4 0 014 4v10a4 4 0 01-4 4H7l-7 7V4a4 4 0 014-4z"></path>
                                 </svg>
                             </button>
-                        </form>
+                        </form> -->
 
 
                         <form action="../admin/Coincidencia/create/op_create.php" method="post">

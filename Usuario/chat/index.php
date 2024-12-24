@@ -114,25 +114,9 @@ $resultado_usuarios_charla = $consulta_usuarios_charla->fetchAll(PDO::FETCH_ASSO
     <script>
         setInterval(() => {
             location.reload();
-        }, 10000);
+        }, 5000);
 
     </script>
-
-<!-- <script>
-
-    function updateChat() {
-        fetch('index.php?update_chat=1')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('chat-messages').innerHTML = data;
-            })
-            .catch(error => console.error('Error al actualizar el chat:', error));
-    }
-
-    setInterval(updateChat, 10000);
-
-    window.onload = updateChat;
-</script> -->
 
 
 
